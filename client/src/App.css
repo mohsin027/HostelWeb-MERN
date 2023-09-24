@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Maven+Pro:wght@500&family=Pacifico&family=Roboto:wght@500&display=swap');
+:root{
+    --primary-color:#3b71ca;
+}
+
+*{
+    font-family: 'Maven Pro', sans-serif;
+}
+
+.brand-name{
+    font-family: 'Pacifico', cursive;
+}
+
+.search-box{
+    display: flex;
+    justify-content: space-between;
+    background-color: #e7e7e7;
+    height: 35px;
+    border-radius: 20px;
+    overflow: hidden;
+    width: 60%;
+}
+.search-box input, .search-box button{
+    background: none;
+    outline: none;
+    border: none;
+}
+.search-box button{
+    background-color: var(--primary-color);
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+.search-box input{
+    padding-left: 20px;
+    font-size: .85rem;
+    width: 100%;
+}
+
+.transparent-btn{
+    background: none !important;
+    color: black;
+    box-shadow: none;
+}
+.transparent-btn:hover, .transparent-btn:active, .transparent-btn:focus{
+    background: none !important;
+    color: black;
+    box-shadow: none !important;
+}
+.drop-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.icon-disabled{
+    color: rgb(173, 173, 173);
+}
+.menu-icon{
+    display: none;
+}
+.brand-name.side{
+    display: none !important;
+}
+@media (max-width:766px){
+    .css-1elf7ca{
+        display: none;
+    }
+    .menu-icon{
+        display: block;
+    }
+
+    .search-box{
+        margin: 5px;
+        width: 100%;
+    }
+    .brand-name{
+        font-size: 1.3rem;
+        margin: 0px;
+        margin-right: 10px;
+    }
+    .search-box button{
+        width: 30px;
+    }
+    .brand-name.side{
+        display: block !important;
+    }
+}
