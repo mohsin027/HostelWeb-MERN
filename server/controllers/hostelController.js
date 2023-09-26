@@ -21,10 +21,24 @@ export const addHostel=  async (req, res) => {
 }
 export const hostelCheck=  async (req, res) => {
   try {
-    // console.log(req.body,'ho con cvons');
-    const isHostel =await HostelModel.find({adminData: req.body.adminData}).populate('rooms')
-    res.status(201).json({success:true,isHostel});
-    // console.log(isHostel,' hostel check controller');
+    const { limit, skip, adminData } = req.query;
+    // const isHostel =await HostelModel.find({adminData: req.body.adminData}).populate('rooms')
+    // res.status(201).json({success:true,isHostel,count,skip,limit});
+//
+    const count = await HostelModel.find({adminData}).count();
+    let hostelList = [];
+    if (limit) {
+      hostelList = await HostelModel.find({adminData}).populate('rooms')
+        .skip(skip ?? 0)
+        .limit(limit)
+        .sort({ _id: -1 });
+    } else {
+      hostelList = await HostelModel.find().populate('rooms')
+        .skip(skip ?? 0)
+        .sort({ _id: -1 });
+    }
+    res.status(201).json({ hostelList, count, limit, skip });
+//    
   } catch (error) {
     console.error('Error checking hostel:', error);
     res.status(500).json({ error: 'Failed to check hostel' });
@@ -32,10 +46,30 @@ export const hostelCheck=  async (req, res) => {
 }
 export const getBookings=  async (req, res) => {
   try {
-    // console.log(req.body,'ho con cvons');
-    const roomBooking =await roomBookingModel.find({}).populate('hostelId roomId userId');
-    res.status(201).json({success:true,roomBooking});
-    // console.log(roomBooking,' booking check controller');
+    const {hostelAdminId,skip,limit}=req.query
+    console.log(hostelAdminId,'123')
+    const hostels =await HostelModel.find({adminData:hostelAdminId}).select('_id')
+    const hostelIds= hostels.map(hostel =>hostel._id)
+console.log('hostels',hostelIds)
+    // const roomBooking =await roomBookingModel.find({hostelId:{$in:hostelIds}}).populate('hostelId roomId userId');
+    // res.status(201).json({success:true,roomBooking});
+//
+const count = await roomBookingModel.find({hostelId:{$in:hostelIds}}).count();
+    let roomBooking = [];
+    if (limit) {
+      roomBooking = await roomBookingModel.find({hostelId:{$in:hostelIds}}).populate('hostelId roomId userId')
+        .skip(skip ?? 0)
+        .limit(limit)
+        .sort({ _id: -1 });
+    } else {
+      roomBooking = await roomBookingModel.find({hostelId:{$in:hostelIds}}).populate('hostelId roomId userId')
+        .skip(skip ?? 0)
+        .sort({ _id: -1 });
+    }
+    res.status(201).json({ roomBooking, count, limit, skip });
+//    
+//
+
   } catch (error) {
     console.error('Error checking bookings:', error);
     res.status(500).json({ error: 'Failed to check bookings' });
@@ -69,21 +103,30 @@ export const handleBlockStatus=  async (req, res) => {
 
 export const updateHostel=  async (req, res) => {
   try {
-    const {_id, hostelName, location,  description,admissionFees} = req.body
-    const hostelImage=await cloudinary.uploader.upload(req.body.hostelImage,{
-      folder:'hostelweb'
-    })
-    console.log(req.body,'update hostel in controller')
-
-    const updatedHostel = await HostelModel.findByIdAndUpdate(_id, {
-      $set:{
-        hostelName, location,  description,admissionFees,hostelImage,
-      }
-    })
+    const {_id, hostelName,location,  description,admissionFees} = req.body
+    const hostel = await HostelModel.findById(_id)
+    if(req.body.hostelImage){
+      hostel.hostelImage=await cloudinary.uploader.upload(req.body.hostelImage,{
+        folder:'hostelweb'
+      })
+    }
+    if(location){
+      hostel.location=location
+    }
+    if(description){
+      hostel.description=description
+    }
+    if(admissionFees){
+      hostel.admissionFees=admissionFees
+    }
+    if(hostelName){
+      hostel.hostelName=hostelName
+    }
+    await hostel.save()
     // const test= await HostelModel.find({_id})
     // console.log('test',test)
-    res.status(201).json({success:true,updatedHostel, err:false});
-    console.log(updatedHostel,'hostel updated successfully')
+    res.status(201).json({success:true,hostel, err:false});
+    console.log(hostel,'hostel updated successfully')
   } catch (error) {
     console.error('Error updating:', error);
     res.status(500).json({ err:true, error: 'Failed to update hostel' });

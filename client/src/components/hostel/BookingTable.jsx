@@ -8,29 +8,61 @@ import {
   MDBContainer,
 } from "mdb-react-ui-kit";
 
+
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import moment from "moment";
+import { Pagination } from "@mui/material";
 
 function BookingTable(props) {
 
   const { searchQuery } = useSelector((state) => state.common);
   const { hostel } = useSelector((state) => state.auth.hostel);
+  console.log('hostelsbookingtable', hostel._id);
   const [bookingData, setBookingData] = useState([]);
+  const [active, setActive] = useState(1);
+  const [refresh, setRefresh] = useState(false);
+  const [limit, setLimit] = useState(5);
+  const [skip, setSkip] = useState(0);
+  const [page, setPage] = useState(1);
+  const [count, setCount] = useState(1);
   const getBookings = async () => {
     try {
-      const response = await axios.get("/hostel/hostel/booking");
-      console.log(response,'res bookin tab in hostel');
-      const { roomBooking } = response.data;
-      setBookingData(roomBooking);
+      const response = await axios.get("/hostel/hostel/booking",{params: {hostelAdminId:hostel._id,skip: (page - 1)*limit, limit}});
+      // const { roomBooking } = response.data;
+      const roomBooking = await response.data.roomBooking;
+      const count = await response.data.count;
+      if(roomBooking){
+
+        setBookingData(roomBooking);
+      }
+      if (count) {
+        setCount(Math.ceil(count/limit));
+      }
     } catch (error) {
       console.log(error, "booking chweck error");
     }
   };
   useEffect(() => {
     getBookings();
-  }, []);
+  }, [refresh, page,limit]);
   console.log(bookingData,'booking data');
+
+  const handlePageChange = async (event, value) => {
+    setPage(value);
+
+    setSkip(page * limit);
+
+    console.log("skip", skip);
+    setRefresh(!refresh);
+  };
+  console.log("value", "page", page);
+  const handleItemsPerPage = async (e) => {
+    setLimit(e.target.value);
+
+    console.log(e.target.value);
+    setRefresh(!refresh);
+  };
 
   return (
     <MDBContainer className="pt-3">
@@ -53,7 +85,10 @@ function BookingTable(props) {
                 Amount
               </th>
               <th className="fw-bold" scope="col">
-                Date
+                CheckIn
+              </th>
+              <th className="fw-bold" scope="col">
+                Checkout
               </th>
             </tr>
           </MDBTableHead>
@@ -62,15 +97,7 @@ function BookingTable(props) {
                 <tr key={index}>
                   <td>
                     <div className="d-flex align-items-center">
-                      {/* <img
-                        src={
-                          hostel?.hostelImage?.url ??
-                          "https://media-cdn.tripadvisor.com/media/photo-s/05/33/47/86/tigon-hostel.jpg"
-                        }
-                        alt=""
-                        style={{ width: "45px", height: "45px" }}
-                        className="rounded-circle"
-                      /> */}
+                     
                       <div className="ms-3">
                         <p className="fw-bold mb-1">{room.hostelId.hostelName}hh</p>
                       </div>
@@ -88,35 +115,28 @@ function BookingTable(props) {
                   <td>
                     <p className="fw-normal mb-1">{moment(room.createdAt).format("DD-MM-YYYY")}</p>
                   </td>
-                  {/* <td>{hostel.hostelType}</td> */}
-                  {/* <td>
-                    <MDBBadge
-                      color={
-                        hostel?.isApproved === "Pending"
-                          ? "warning"
-                          : hostel?.isApproved === "Approved"
-                          ? "success"
-                          : "danger"
-                      }
-                      pill
-                    >
-                      {hostel?.isApproved}
-                    </MDBBadge>
+                  <td>
+                    <p className="fw-normal mb-1">{moment(room.createdAt).add(1,'M').format("DD-MM-YYYY")}</p>
                   </td>
-                  <td className="">
-                    {hostel?.isApproved === "Approved" ? (
-                      <MDBBtn>ACTIVE</MDBBtn>
-                    ) : (
-                      <MDBBtn color="info">view & reapply</MDBBtn>
-                    )}
-
-                  
-                  </td> */}
+                
                 </tr>
               ))}
           </MDBTableBody>
         </MDBTable>
+        <div className="d-flex justify-content-between">
+          <Pagination count={count} page={page} onChange={handlePageChange} />
+          <div className="d-flex w-10 align-items-center">
+            <p className="m-2">view</p>
+            <select name="limit" className="" id=""  onChange={handleItemsPerPage}>
+              <option value={5}>5</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </select>
+            <p className="m-2">items</p>
+          </div>
+        </div>
       </div>
+      
     </MDBContainer>
   );
 }

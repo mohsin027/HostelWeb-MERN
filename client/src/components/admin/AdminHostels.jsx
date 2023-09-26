@@ -9,6 +9,7 @@ export default function AdminHostels() {
     <AdminNavbar />
     <div className='d-flex'>
     <Sidebar className="sidebar"></Sidebar>
+
     <HostelTable></HostelTable>
     </div>
     {/* <DashboardLayout/> */}

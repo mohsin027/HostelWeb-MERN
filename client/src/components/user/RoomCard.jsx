@@ -74,7 +74,7 @@ const avail=room.capacity-room.occupants
           <MDBCardTitle>₹ {room.room_rent}</MDBCardTitle>
           <MDBCardText> 
           {avail<=0?<p className="text-danger">` Not Available`</p>:"Slots Available "+avail}
-          {genderMatch===false && <p className="error">gender not match</p>}
+          {genderMatch===false && <p className="text-danger">Gender not match</p>}
              </MDBCardText>
           <MDBBtn rounded onClick={handleBooking} className={(avail<=0 || genderMatch===false) && "disabled"}>
               Book Now

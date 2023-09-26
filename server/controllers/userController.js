@@ -5,17 +5,40 @@ import roomBookingModel from "../models/roomBookingModel.js";
 import RoomModel from "../models/roomModel.js";
 import cloudinary from "../config/cloudinary.js";
 
-export const getHostel=  async (req, res) => {
-  try {
+// export const getHostel=  async (req, res) => {
+//   try {
     
-    const hostels = await HostelModel.find({isApproved: "Approved",isBlocked:false}).populate("rooms");
-    res.status(201).json({success:true,hostels});
-    console.log(hostels,'userside hostel listing')
+//     const hostels = await HostelModel.find({isApproved: "Approved",isBlocked:false}).populate("rooms");
+//     res.status(201).json({success:true,hostels});
+//     console.log(hostels,'userside hostel listing')
+//   } catch (error) {
+//     console.error('Error getting hostel:', error);
+//     res.status(500).json({ error: 'Failed to get hostel' });
+//   }
+// }
+export const getHostel = async (req, res) => {
+  try {
+    const { limit, skip } = req.query;
+    console.log(limit, skip);
+    const count = await HostelModel.find({isApproved: "Approved",isBlocked:false}).count();
+    let hostelList = [];
+    if (limit) {
+      hostelList = await HostelModel.find({isApproved: "Approved",isBlocked:false}).populate("rooms")
+        .skip(skip ?? 0)
+        .limit(limit)
+        .sort({ _id: -1 });
+    } else {
+      hostelList = await HostelModel.find({isApproved: "Approved",isBlocked:false}).populate("rooms")
+        .skip(skip ?? 0)
+        .sort({ _id: -1 });
+    }
+    res.status(201).json({ hostelList, count, limit, skip });
   } catch (error) {
-    console.error('Error getting hostel:', error);
-    res.status(500).json({ error: 'Failed to get hostel' });
+    console.error("Error getting hostel:", error);
+    res.status(500).json({ error: "Failed to fetch hostel" });
   }
-}
+};
+
 export const bookRoom=  async (req, res) => {
   try {
     console.log(req.body)

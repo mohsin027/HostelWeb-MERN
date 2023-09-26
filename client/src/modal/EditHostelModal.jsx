@@ -41,7 +41,7 @@ export default function EditHostelModal({
   const { hostel } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    setData(hostelData);
+    setData({...hostelData, hostelImage:null});
   }, [hostelData]);
 
   const handleChange = (e) => {
@@ -68,11 +68,11 @@ export default function EditHostelModal({
       return true;
     }
     if (
-      data?.hostelName.trim() === "" ||
-      data?.description.trim() === "" ||
-      data?.admissionFees.toString().trim() === "" ||
+      data?.hostelName?.trim() === "" ||
+      data?.description?.trim() === "" ||
+      data?.admissionFees?.toString().trim() === "" ||
       // data?.hostelType === "" ||
-      data?.location.trim() === ""
+      data?.location?.trim() === ""
     ) {
       return true;
     }
@@ -89,7 +89,7 @@ export default function EditHostelModal({
           ...data,
         }
       );
-      console.log(responseData);
+      console.log('hostel update in hostel',responseData);
       if (responseData.err) {
         setError(responseData.message);
         return;

@@ -7,15 +7,19 @@ import UserRoutes from "./routes/userRoutes";
 import HostelRoutes from "./routes/hostelRoutes";
 import { Toaster } from "react-hot-toast";
 import AdminRoutes from "./routes/adminRoutes";
-import { ChakraProvider } from '@chakra-ui/react'
+import { ThemeProvider } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
-
+const muiTheme = createTheme();
+const theme = extendTheme();
 
 function App() {
   axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
   axios.defaults.withCredentials = true;
   return (
-      <ChakraProvider >
+    <ChakraProvider theme={theme} resetCSS>
+    <ThemeProvider theme={muiTheme}>
     <div className="App">
       <Toaster position="top-right" reverseOrder={false} />
       <Router>
@@ -28,7 +32,8 @@ function App() {
         </div>
       </Router>
     </div>
-      </ChakraProvider>
+    </ThemeProvider>
+    </ChakraProvider>
   );
 }
 

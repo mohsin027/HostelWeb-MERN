@@ -4,7 +4,7 @@ import { addRooms } from '../controllers/roomController.js';
 const router=express.Router();
 
 router.post('/addHostel',addHostel)
-router.post('/check',hostelCheck)
+router.get('/check',hostelCheck)
 router.get('/booking',getBookings)
 router.post('/addRooms',addRooms)
 router.post('/blockStatus',handleBlockStatus)

@@ -6,14 +6,21 @@ import { Provider } from 'react-redux';
 import App from './App';
 import { applyMiddleware, createStore } from 'redux';
 import rootReducer from './reducers/rootReducers';
+
+
 const container = document.getElementById("root");
 const root = createRoot(container);
 const store = createStore(rootReducer);
 
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
+
+
+
     <App />
+     
     </Provider>
   </React.StrictMode>
 );

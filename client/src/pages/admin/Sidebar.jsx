@@ -31,7 +31,7 @@ import { useNavigate } from 'react-router-dom'
 
 
 const LinkItems = [
-  { name: 'Home',link:"/admin/", icon: FiHome },
+  { name: 'Home',link:"/admin", icon: FiHome },
   { name: 'Hostels',link:"/admin/hostels", icon: FiTrendingUp },
   { name: 'Users', link:'/admin/users',icon: FiCompass },
 
@@ -112,6 +112,7 @@ const NavItem = ({ icon, children, ...rest }) => {
     <Box
       as="a"
       href="#"
+      onClick={(e)=>e.preventDefault()}
       style={{ textDecoration: 'none' }}
       _focus={{ boxShadow: 'none' }}>
       <Flex

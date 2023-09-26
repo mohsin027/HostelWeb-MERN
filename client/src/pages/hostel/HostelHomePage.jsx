@@ -13,10 +13,10 @@ export default function HostelHomePage() {
   console.log("hero", hostel);
   const checkHostel = async () => {
     try {
-      const response = await axios.post("/hostel/hostel/check", {
-        adminData: hostel._id,
-      });
-      const { isHostel } = response.data;
+      const response = await axios.get("/hostel/hostel/check", {params:
+        {adminData: hostel._id,
+      }});
+      const isHostel  = response.data.hostelList;
       setHostelCheck(isHostel);
       console.log(isHostel, "hostel chweck");
     } catch (error) {
