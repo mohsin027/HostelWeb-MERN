@@ -1,4 +1,5 @@
 import HostelModel from "../models/hostelModel.js";
+import roomBookingModel from "../models/roomBookingModel.js";
 import UserModel from "../models/userModel.js";
 
 export const getAllHostel = async (req, res) => {
@@ -109,3 +110,41 @@ export const changeUserStatus = async (req, res) => {
     res.status(500).json({ err: true, error: "Failed to fetch user" });
   }
 };
+
+
+export const dashboardData= async (req,res)=>{
+ try {
+  const hostelCount = await HostelModel.find().count()
+  const userCount = await UserModel.find().count()
+  const bookings = await roomBookingModel.find()
+  const today = new Date();
+
+// for (const booking of bookings) {
+//   const checkInDate = booking.checkIn;
+//   const checkOutDate = new Date(checkInDate);
+//   checkOutDate.setDate(checkOutDate.getDate() + 30);
+
+//   if (today >= checkInDate && today <= checkOutDate) {
+//     console.log(`Booking ${booking._id} is active.`);
+//   } else {
+//     console.log(`Booking ${booking._id} is not active.`);
+//   }
+// }
+const activeBookings = bookings.filter((booking) => {
+  const checkInDate = booking.checkIn;
+  const checkOutDate = new Date(checkInDate);
+  checkOutDate.setDate(checkOutDate.getDate() + 30);
+
+  return today >= checkInDate && today <= checkOutDate;
+});
+const activeBookingsCount = activeBookings.length;
+
+//  const activeBooking= booking.filter((item)=>item.checkIn)
+  const bookingCount = bookings.length
+  console.log("bookingCount",activeBookings);
+  res.status(201).json({ err: false, message:'success',hostelCount,userCount,bookingCount,activeBookingsCount });
+ } catch (error) {
+  console.log(error);
+  res.status(500).json({ err: true, error: "Failed to fetch data" });
+ }
+}

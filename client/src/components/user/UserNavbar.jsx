@@ -66,7 +66,7 @@ export default function UserNavbar() {
           {/* </form> */}
           <MDBDropdown>
             <MDBDropdownToggle
-              tag="a"
+              tag="Link"
               className="nav-link gap-1 d-flex align-items-center"
               role="button"
             >

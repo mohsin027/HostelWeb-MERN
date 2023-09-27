@@ -73,7 +73,7 @@ console.log(genderMatch);
           {/* {rooms.filter(room=>room.match(new RegExp(searchQuery, 'i'))).map((room,index)=> */}
           {rooms.map((room, index) => (
             <Col key={index} md={3} className="mt-3">
-              <RoomCard room={room} hostelId={hostelId}  genderMatch={genderMatch}/>
+              <RoomCard room={room} hostel={hostel}  genderMatch={genderMatch}/>
             </Col>
           ))}
         </Row>

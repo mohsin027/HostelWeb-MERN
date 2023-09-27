@@ -28,6 +28,10 @@ personCount: {
 },
 paymentDetails:{
   type:Object,
+},
+status: {
+  type:String,
+  default:'active'
 }
 },
 { timestamps: true }

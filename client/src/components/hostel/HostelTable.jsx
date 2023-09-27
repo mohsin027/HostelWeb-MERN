@@ -30,6 +30,12 @@ function HostelTable(props) {
   const [skip, setSkip] = useState(0);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [editData, setEditData] = useState("");
+  const [filter, setFilter] = useState("all");
+
   const checkHostel = async () => {
     try {
       const response = await axios.get("/hostel/hostel/check", {
@@ -48,13 +54,9 @@ function HostelTable(props) {
     }
   };
 
-  const [open, setOpen] = useState(false);
-  const [openEdit, setOpenEdit] = useState(false);
-  const [refresh, setRefresh] = useState(false);
-  const [editData, setEditData] = useState("");
   useEffect(() => {
     checkHostel();
-  }, [openEdit, refresh, page, limit]);
+  }, [openEdit, refresh, page, limit,filter]);
 
   const handleListing = async (listing, id, index) => {
     const { isConfirmed } = await mySwal.confirm("Are You sure ");
@@ -78,6 +80,20 @@ function HostelTable(props) {
       toast.error("something went wromg");
     }
   };
+  const filteredHostelData = hostelData.filter((hostel) => {
+    if (filter === "all") {
+      return true; 
+    } else if (filter === "approved") {
+      return hostel.isApproved === "Approved";
+    } else if (filter === "rejected") {
+      return hostel.isApproved === "Rejected";
+    } else if (filter === "listed") {
+      return hostel.isApproved === "Approved" && !hostel.isBlocked;
+    } else if (filter === "unlisted") {
+      return hostel.isApproved === "Approved" && hostel.isBlocked;
+    }
+    return true;
+  });
 
   const handlePageChange = async (event, value) => {
     setPage(value);
@@ -101,6 +117,39 @@ function HostelTable(props) {
       <div className="d-flex justify-content-end mb-2">
         <MDBBtn onClick={() => setOpen(true)}>Add Hostel</MDBBtn>
       </div>
+      <div>
+          <span className="me-2">Filter by:</span>
+          <MDBBtn
+            color={filter === "all" ? "primary" : "light"}
+            onClick={() => setFilter("all")}
+          >
+            All
+          </MDBBtn>
+          <MDBBtn
+            color={filter === "listed" ? "primary" : "light"}
+            onClick={() => setFilter("listed")}
+          >
+            Listed
+          </MDBBtn>
+          <MDBBtn
+            color={filter === "unlisted" ? "primary" : "light"}
+            onClick={() => setFilter("unlisted")}
+          >
+            Unlisted
+          </MDBBtn>
+          <MDBBtn
+            color={filter === "approved" ? "primary" : "light"}
+            onClick={() => setFilter("approved")}
+          >
+            Approved
+          </MDBBtn>
+          <MDBBtn
+            color={filter === "rejected" ? "primary" : "light"}
+            onClick={() => setFilter("rejected")}
+          >
+            Rejected
+          </MDBBtn>
+        </div>
       <div className="table-responsive">
         <MDBTable align="middle" striped>
           <MDBTableHead className="" style={{ backgroundColor: "#E7E7E7" }}>
@@ -126,7 +175,7 @@ function HostelTable(props) {
             </tr>
           </MDBTableHead>
           <MDBTableBody>
-            {hostelData
+            {filteredHostelData
               .filter((item) =>
                 item.hostelName.match(new RegExp(searchQuery, "i"))
               )

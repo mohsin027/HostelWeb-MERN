@@ -109,3 +109,16 @@ export const getBookings=  async (req, res) => {
     res.status(500).json({ err:true, error: 'Failed to get profile' });
   }
 }
+export const cancelBooking=  async (req, res) => {
+  try {
+    const {bookingId} = req.params;
+    console.log(bookingId);
+    const cancelledBooking = await roomBookingModel.findByIdAndUpdate(bookingId,{status: 'cancelled'})
+    console.log('response in cancel booking',cancelledBooking)
+    res.status(201).json({success:true,cancelledBooking,err:false});
+    console.log('profile booking cancel successfully')
+  } catch (error) {
+    console.error('Error updating:', error);
+    res.status(500).json({ err:true, error: 'Failed to cancel booking' });
+  }
+}

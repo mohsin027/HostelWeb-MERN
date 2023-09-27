@@ -14,14 +14,17 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import RoomDetailsModal from "../../modal/RoomDetailsModal";
 
-export default function RoomCard({ room,hostelId,genderMatch }) {
+export default function RoomCard({ room,hostel,genderMatch }) {
+  const hostelId = hostel._id
+  const admissionFees = hostel.admissionFees
   const {user} = useSelector((state)=>state.auth.user)
   const [roomDetailsOpen, setRoomDetailsOpen] =useState(false)
   const [value, setValue] = useState(null)
+  const [date, setDate] = useState(new Date());
     const navigate=useNavigate()
     const handleBooking = async (e) => {
       e.stopPropagation()
-      const { data } = await axios.post("/user/payment", {amount:room.room_rent});
+      const { data } = await axios.post("/user/payment", {amount:room.room_rent+admissionFees});
       if (!data.err) {
           handleRazorPay(data.order);
       }
@@ -35,7 +38,7 @@ export default function RoomCard({ room,hostelId,genderMatch }) {
           description: "Test Transaction",
           order_id: order.id,
           handler: async (response) => {
-              const { data } = await axios.post("/user/payment/verify", { response, roomId: room._id,personCount:1, hostelId, amount:room.room_rent, userId:user._id });
+              const { data } = await axios.post("/user/payment/verify", { response, roomId: room._id,personCount:1, hostelId, amount:room.room_rent, userId:user._id,checkIn:date });
               if(data.err){
                   mySwal.error(data.message)
               }else{
@@ -76,12 +79,12 @@ const avail=room.capacity-room.occupants
           {avail<=0?<p className="text-danger">` Not Available`</p>:"Slots Available "+avail}
           {genderMatch===false && <p className="text-danger">Gender not match</p>}
              </MDBCardText>
-          <MDBBtn rounded onClick={handleBooking} className={(avail<=0 || genderMatch===false) && "disabled"}>
+          {/* <MDBBtn rounded onClick={handleBooking} className={(avail<=0 || genderMatch===false) && "disabled"}>
               Book Now
-          </MDBBtn>
+          </MDBBtn> */}
         </MDBCardBody>
       </MDBCard>
-      <RoomDetailsModal room={room} handleBooking={handleBooking} avail={avail} open={roomDetailsOpen} setOpen={setRoomDetailsOpen} genderMatch={genderMatch}/>
+      <RoomDetailsModal room={room} admissionFees={admissionFees} handleBooking={handleBooking} avail={avail} open={roomDetailsOpen} setOpen={setRoomDetailsOpen} genderMatch={genderMatch} date={date} setDate={setDate}/>
 
     </div>
   );

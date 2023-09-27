@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  MDBBtn,
   MDBCard,
   MDBCardBody,
   MDBCardHeader,
@@ -18,6 +19,7 @@ import moment from "moment";
 export default function BookingDetails() {
   const { user } = useSelector((state) => state.auth.user);
   const [bookingData,setBookingData]=useState([])
+  const [refresh,setRefresh]=useState(false)
 
   const getBookings =async()=>{
     try {
@@ -30,24 +32,32 @@ export default function BookingDetails() {
       console.log(error);
     }
   }
-let d=new Date(Date.now());
-console.log('date in profile comp',d); 
+
+  let curDate=new Date();
+  const handleCancel=async (id)=>{
+   try {
+    console.log('date in profile comp',curDate, id); 
+    const response=await axios.get('/user/booking/cancel/'+id)
+    const cancelledBooking=await response.data.cancelledBooking;
+    console.log('success',cancelledBooking);
+    // setRefresh(!refresh)
+   } catch (error) {
+    console.log(error);
+   }
+  }
 useEffect(()=>{
   getBookings()
-},[])
+},[refresh])
 
   return (
     <>
-      <section className="container">
+      <section className="container pb-5">
         <MDBRow>
           <MDBCol>
             <MDBCard>
               <MDBCardHeader>
                 <h4>Booking Details</h4>
-                <p>
-                {bookingData[0]?.hostelName}
-                  
-                </p>
+               
               </MDBCardHeader>
               <MDBCardBody>
                 <MDBCardText>
@@ -58,16 +68,29 @@ useEffect(()=>{
                             <th>Room Name</th>
                             <th>Amount</th>
                             <th>Check In</th>
+                            <th>Valid till</th>
+                            <th>Action</th>
                         </tr>
                     </MDBTableHead>
                     <MDBTableBody>
                         {
                           bookingData.map((item) =>
-                      <tr>
+                      <tr key={item._id}>
                         <td>{item.hostelId.hostelName}</td>
                         <td>{item.roomId.title}</td>
                         <td>{item.amount}</td>
                         <td>{moment(item.checkIn).format('DD-MM-YYYY')}</td>
+                        <td>
+                    <p className="fw-normal mb-1">{moment(item.checkIn).add(1,'M',).format("DD-MM-YYYY")}</p>
+                  </td>
+                  <td>
+                    {item.status==='active'?
+                    <MDBBtn disabled={curDate<=item.checkIn} onClick={()=>handleCancel(item._id)}>Cancel</MDBBtn>
+                  :item.status==='cancelled' ?
+                  <span>cancelled</span>
+                  :'expired'
+                  }
+                  </td>
                         {/* <td>{user?.hostelData?.hostelId.hostelName}</td>
                         <td>{user?.hostelData?.roomId.title}</td>
                         <td>{user?.hostelData?.roomId.room_rent}</td>

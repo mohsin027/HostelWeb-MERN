@@ -21,7 +21,7 @@ export default function HostelListing ({data}) {
           {data.description}
         </MDBCardText>
         <MDBCardText>
-          {data.hostelType==='mens'?"Gents Hostel":"Ladies Hostel"}
+          {data.hostelType==='men'?"Gents Hostel":"Ladies Hostel"}
         </MDBCardText>
        
         <MDBCardText>

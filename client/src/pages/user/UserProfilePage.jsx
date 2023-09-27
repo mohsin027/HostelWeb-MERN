@@ -8,7 +8,7 @@ export default function UserProfilePage() {
 
   },[BookingDetails])
   return (
-    <div style={{ backgroundColor: '#eee',height:'100vh' }}>
+    <div style={{ backgroundColor: '#eee',height:'100%' }}>
       <NavMain/>
       <UserProfile/>
       <BookingDetails/>

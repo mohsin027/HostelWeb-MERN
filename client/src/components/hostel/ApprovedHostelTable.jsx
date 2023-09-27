@@ -13,27 +13,58 @@ import AddHostelModal from "../../modal/AddHostelModal";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import RoomHomePage from "../../pages/hostel/RoomHomePage";
+import { Pagination } from "@mui/material";
 
 function ApprovedHostelTable() {
-
   const { searchQuery } = useSelector((state) => state.common);
   const { hostel } = useSelector((state) => state.auth.hostel);
   const [hostelData, setHostelData] = useState([]);
+  const [limit, setLimit] = useState(5);
+  const [skip, setSkip] = useState(0);
+  const [page, setPage] = useState(1);
+  const [count, setCount] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [editData, setEditData] = useState("");
   const checkHostel = async () => {
     try {
-      const response = await axios.post("/hostel/hostel/check", {
-        adminData: hostel._id,
+      const response = await axios.get("/hostel/hostel/check", {
+        params: { adminData: hostel._id, skip: page - 1, limit },
       });
-      const { isHostel } = response.data;
-      setHostelData(isHostel.filter((i)=>i.isApproved==='Approved'));
+      const hostels = response.data.hostelList;
+      const count = response.data.count;
+      if (hostels) {
+        // setHostelData(hostels);
+        setHostelData(hostels.filter((i) => i.isApproved === "Approved"));
+      }
+      if (count) {
+        setCount(Math.ceil(count / limit));
+      }
     } catch (error) {
       console.log(error, "hostel chweck error");
     }
   };
-  const [open, setOpen] = useState(false);
+
   useEffect(() => {
     checkHostel();
-  }, []);
+  }, [openEdit, refresh, page, limit]);
+
+  const handlePageChange = async (event, value) => {
+    setPage(value);
+
+    setSkip(page * limit);
+
+    console.log("skip", skip);
+    setRefresh(!refresh);
+  };
+  console.log("value", "page", page);
+  const handleItemsPerPage = async (e) => {
+    setLimit(e.target.value);
+
+    console.log(e.target.value);
+    setRefresh(!refresh);
+  };
 
   return (
     <MDBContainer className="pt-3">
@@ -66,7 +97,6 @@ function ApprovedHostelTable() {
             {hostelData
               .filter((item) =>
                 item.hostelName.match(new RegExp(searchQuery, "i"))
-
               )
               .map((hostel, index) => (
                 <tr key={index}>
@@ -106,28 +136,34 @@ function ApprovedHostelTable() {
                   </td>
                   <td className="">
                     {hostel?.isApproved === "Approved" ? (
-                      <Link to={'/hostel/hostel/'+hostel._id}><MDBBtn>Select</MDBBtn></Link>
+                      <Link to={"/hostel/hostel/" + hostel._id}>
+                        <MDBBtn>Select</MDBBtn>
+                      </Link>
                     ) : (
                       <MDBBtn color="info">view & reapply</MDBBtn>
                     )}
-
-                    {/* <MDBDropdown>
-        <MDBDropdownToggle className='transparent-btn drop-btn'>
-          <RiMore2Fill className={hostel?.isApproved!=="Pending" && "icon-disabled"}/>
-        </MDBDropdownToggle>
-        
-        {
-          hostel?.isApproved==="Pending" &&
-          <MDBDropdownMenu>
-          <MDBDropdownItem link onClick={()=>handleStatus('Approved',hostel._id, index)}>Approve</MDBDropdownItem>
-          <MDBDropdownItem link onClick={()=>handleStatus('Rejected',hostel._id, index)}>Reject</MDBDropdownItem>
-        </MDBDropdownMenu>}
-    </MDBDropdown> */}
                   </td>
                 </tr>
               ))}
           </MDBTableBody>
         </MDBTable>
+        <div className="d-flex justify-content-between">
+          <Pagination count={count} page={page} onChange={handlePageChange} />
+          <div className="d-flex w-10 align-items-center">
+            <p className="m-2">view</p>
+            <select
+              name="limit"
+              className=""
+              id=""
+              onChange={handleItemsPerPage}
+            >
+              <option value={5}>5</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </select>
+            <p className="m-2">items</p>
+          </div>
+        </div>
       </div>
       <AddHostelModal open={open} setOpen={setOpen} />
     </MDBContainer>

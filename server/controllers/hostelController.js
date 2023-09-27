@@ -37,6 +37,7 @@ export const hostelCheck=  async (req, res) => {
         .skip(skip ?? 0)
         .sort({ _id: -1 });
     }
+    // console.log('hostelList',hostelList);
     res.status(201).json({ hostelList, count, limit, skip });
 //    
   } catch (error) {

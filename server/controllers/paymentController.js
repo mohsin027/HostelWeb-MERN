@@ -39,6 +39,7 @@ export async function verifyPayment(req, res) {
             userId, hostelId,
             roomId, personCount,
             amount,
+            checkIn
         } = req.body;
 
         let body = response.razorpay_order_id + "|" + response.razorpay_payment_id;
@@ -53,7 +54,7 @@ export async function verifyPayment(req, res) {
                 paymentDetails:response,
                 userId, hostelId,
                 roomId, personCount,
-                amount
+                amount,checkIn
             })
             await UserModel.findByIdAndUpdate(userId, {hostelData:booking})
             return res.json({
