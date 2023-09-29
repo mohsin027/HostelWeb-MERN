@@ -1,6 +1,33 @@
 import HostelModel from "../models/hostelModel.js";
 import roomBookingModel from "../models/roomBookingModel.js";
 import UserModel from "../models/userModel.js";
+import cron from "node-cron";
+
+
+cron.schedule('0 0 0 * * * *', async() => {
+  try{
+    const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  console.log(today, tomorrow)
+  const updated = await roomBookingModel.updateMany({
+    expiry: {
+      $gte: today,
+      $lt: tomorrow,
+    },
+    status:'active'
+  },{
+    $set:{
+      status:"expired"
+    }
+  })
+  console.log(updated.modifiedCount + " expired")
+  }catch(err){
+    console.log(err)
+  }
+});
+
 
 export const getAllHostel = async (req, res) => {
   try {

@@ -75,7 +75,7 @@ export default function RoomDetailsModal({
                 ></MDBBtn>
               </MDBModalHeader>
               <MDBModalBody>
-                <MDBRow style={{ padding: "10px" }}>
+                <MDBRow style={{ padding: "5px" }}>
                   <MDBCarousel
                     style={{ borderRadius: "10px", overflow: "hidden", maxHeight:'340px'}}
                     showControls
@@ -109,7 +109,7 @@ export default function RoomDetailsModal({
                     </div>
                   </MDBRow>
 
-                  <MDBRow className="mt-1">
+                  <MDBRow className="">
                     <MDBCardText>
                       {room.capacity === 1
                         ? "Single"
@@ -125,7 +125,7 @@ export default function RoomDetailsModal({
                   <MDBRow className="mt-1">
                     <MDBCardText>{room.description}</MDBCardText>
                   </MDBRow>
-                  <MDBRow className="mt-1">
+                  <MDBRow className="">
                     <MDBCardText>
                       {avail <= 0 ? (
                         <p className="text-danger">` Not Available`</p>
@@ -133,11 +133,11 @@ export default function RoomDetailsModal({
                         "Slots Available " + avail
                       )}
                       {genderMatch === false && (
-                        <p className="error">gender not match</p>
+                        <p className="text-danger">Gender not match</p>
                       )}
                     </MDBCardText>
                   </MDBRow>
-                  <MDBRow className="mt-1">
+                  <MDBRow className="">
                       <input
                         type="date"
                         onChange={handleDateChange}

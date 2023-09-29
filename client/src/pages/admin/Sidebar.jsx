@@ -73,6 +73,8 @@ export default function Sidebar() {
 const SidebarContent = ({ onClose, ...rest }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const currentLocation = window.location.pathname;
+
   return (
     <Box
       bg={'white'}
@@ -96,8 +98,8 @@ const SidebarContent = ({ onClose, ...rest }) => {
           sessionStorage.setItem('adminSideSelected',item.name)
           navigate(item.link)
         }} _hover={{ backgroundColor: '#3B71CA', color:"white" }} 
-        backgroundColor={sessionStorage.getItem('adminSideSelected')===item.name ? "#3B71CA" :"transparent"}
-        color={sessionStorage.getItem('adminSideSelected')===item.name ? "white" :"black"}
+        backgroundColor={currentLocation===item.link ? "#3B71CA" :"transparent"}
+        color={currentLocation===item.link ? "white" :"black"}
         style={{transition:".2s"}}
          icon={item.icon}>
           {item.name}

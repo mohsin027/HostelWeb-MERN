@@ -45,10 +45,10 @@ console.log(genderMatch);
     <>
       <UserNavbar />
       <MDBContainer>
-        <Row className="pt-4 shadow mt-3 rounded">
+        <Row className="pt-4 shadow mt-1 rounded">
           <Col md={6} className=" py-4">
             <img
-              style={{ height: "25rem", borderRadius: "1rem" }}
+              style={{ height: "25rem", borderRadius: "0.5rem" }}
               src={hostel?.hostelImage?.url}
               alt="hostel image"
             />
@@ -67,12 +67,12 @@ console.log(genderMatch);
             </div>
           </Col>
         </Row>
-        <Row className="mt-5 mb-5 p-3 shadow rounded">
+        <Row className="mt-3 mb-5 p-3 shadow rounded">
           <h2>Rooms</h2>
 
           {/* {rooms.filter(room=>room.match(new RegExp(searchQuery, 'i'))).map((room,index)=> */}
           {rooms.map((room, index) => (
-            <Col key={index} md={3} className="mt-3">
+            <Col key={index} md={3} className="mt-2">
               <RoomCard room={room} hostel={hostel}  genderMatch={genderMatch}/>
             </Col>
           ))}

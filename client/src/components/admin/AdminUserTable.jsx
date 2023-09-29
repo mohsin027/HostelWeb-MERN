@@ -32,7 +32,7 @@ export default function UserTable() {
     const fetchData = async () => {
       try {
         const response = await axios.get("/admin/users", {
-          params: { skip: (page - 1)*limit, limit },
+          params: { skip: (page - 1) * limit, limit },
         });
         const users = await response.data.userList;
         const count = await response.data.count;
@@ -41,14 +41,14 @@ export default function UserTable() {
         }
         console.log("response:", response);
         if (count) {
-          setCount(Math.ceil(count/limit));
+          setCount(Math.ceil(count / limit));
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, [refresh, page,limit]);
+  }, [refresh, page, limit]);
 
   const handleStatus = async (status, id, index) => {
     const { isConfirmed } = await mySwal.confirm("Are You sure " + status);
@@ -205,7 +205,12 @@ export default function UserTable() {
           <Pagination count={count} page={page} onChange={handlePageChange} />
           <div className="d-flex w-10 align-items-center">
             <p className="m-2">view</p>
-            <select name="limit" className="" id=""  onChange={handleItemsPerPage}>
+            <select
+              name="limit"
+              className=""
+              id=""
+              onChange={handleItemsPerPage}
+            >
               <option value={5}>5</option>
               <option value={25}>25</option>
               <option value={50}>50</option>

@@ -5,6 +5,10 @@ checkIn:{
   type:Date,
   default:new Date()
 },
+expiry:{
+  type:Date,
+  required:true
+},
 hostelId: {
   type: mongoose.Schema.Types.ObjectId,
   ref: 'hostel',

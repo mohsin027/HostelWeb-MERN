@@ -9,7 +9,7 @@ export const addRooms=  async (req, res) => {
       console.log(req.body)
       const room_image=await cloudinary.uploader.upload(req.body.room_image,{
         folder:'hostelweb'
-      }) 
+      })
       const {room_no,room_rent,capacity,title,description,hostelId} = req.body
       const newRoom = new RoomModel({room_no,room_rent,capacity,title,description, room_image, hostelId});
       await newRoom.save();

@@ -42,6 +42,8 @@ export async function verifyPayment(req, res) {
             checkIn
         } = req.body;
 
+        const expiry = new Date(new Date(checkIn).setMonth(new Date(checkIn).getMonth()+1))
+
         let body = response.razorpay_order_id + "|" + response.razorpay_payment_id;
 
         var expectedSignature = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
@@ -54,7 +56,7 @@ export async function verifyPayment(req, res) {
                 paymentDetails:response,
                 userId, hostelId,
                 roomId, personCount,
-                amount,checkIn
+                amount,checkIn, expiry
             })
             await UserModel.findByIdAndUpdate(userId, {hostelData:booking})
             return res.json({

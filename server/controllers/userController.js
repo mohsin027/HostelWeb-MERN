@@ -3,7 +3,14 @@ import HostelModel from "../models/hostelModel.js";
 import UserModel from "../models/userModel.js";
 import roomBookingModel from "../models/roomBookingModel.js";
 import RoomModel from "../models/roomModel.js";
+import Razorpay from 'razorpay'
 import cloudinary from "../config/cloudinary.js";
+
+
+let instance = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
 
 // export const getHostel=  async (req, res) => {
 //   try {
@@ -113,10 +120,31 @@ export const cancelBooking=  async (req, res) => {
   try {
     const {bookingId} = req.params;
     console.log(bookingId);
-    const cancelledBooking = await roomBookingModel.findByIdAndUpdate(bookingId,{status: 'cancelled'})
-    console.log('response in cancel booking',cancelledBooking)
-    res.status(201).json({success:true,cancelledBooking,err:false});
+    const booking = await roomBookingModel.findById(bookingId).populate('hostelId')
+    if(booking.status==="cancelled"){
+      return res.json({err:true, message:"Booking already cancelled"});
+    }
+    const paymentId=booking.paymentDetails.razorpay_payment_id;
+    const payment = await instance.payments.fetch(paymentId);
+
+    if (payment.amount_refunded) {
+      return res.json({err:true, message:"Payment has been refunded."})
+    }
+
+    await instance.payments.refund(paymentId,{
+      "amount": booking.amount * 100 ,
+      "speed": "normal",
+      "notes": {
+        "notes_key_1": "Thank you for using hostelWeb",
+      }
+    })
+
+    booking.status="cancelled";
+    await booking.save();
+    await RoomModel.findByIdAndUpdate(booking.roomId,{$inc:{occupants:-1}})
+
     console.log('profile booking cancel successfully')
+    res.status(201).json({success:true ,err:false});
   } catch (error) {
     console.error('Error updating:', error);
     res.status(500).json({ err:true, error: 'Failed to cancel booking' });
