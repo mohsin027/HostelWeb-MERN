@@ -1,0 +1,23 @@
+.hostel-listing-container{
+    display: flex;
+}
+.hostel-listing-filter{
+    background-color: #E7E7E7;
+    border-radius: 10px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    padding: 20px;
+    gap: 10px;
+}
+
+
+@media (max-width:768px){
+    .hostel-listing-container{
+        flex-direction: column;
+    }
+    .hostel-listing-filter{
+        width: 100%;
+    }
+}

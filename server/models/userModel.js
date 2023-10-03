@@ -15,11 +15,11 @@ email:{
 },
 password:{
     type:String,
-    required:true
+    // required:true
 },
 gender:{
   type:String,
-  required:true
+  // required:true
 },
 contactNumber:{
   type:String,

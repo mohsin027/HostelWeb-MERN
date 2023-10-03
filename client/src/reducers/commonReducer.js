@@ -2,7 +2,8 @@ const initialState = {
     adminSidebarOpen:false,
     hostelSidebarOpen:false,
     searchQuery:"",
-    userHostelData:""
+    // userHostelData:""
+    hostels:""
   };
   
   const commonReducer = (state = initialState, action) => {
@@ -25,7 +26,7 @@ const initialState = {
       case "SET-HOSTEL-DATA": 
         return {
           ...state,
-         userHostelData:action.payload
+         hostels:{hostels:action.payload}
         }
         default: {
           return state

@@ -53,6 +53,9 @@ const hostelSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    roomShares: {
+      type: Array,
+    },
     hostelReviews: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'reviews',

@@ -5,6 +5,7 @@ import roomBookingModel from "../models/roomBookingModel.js";
 import RoomModel from "../models/roomModel.js";
 import Razorpay from 'razorpay'
 import cloudinary from "../config/cloudinary.js";
+import ComplaintModel from "../models/complaintModel.js";
 
 
 let instance = new Razorpay({
@@ -12,34 +13,52 @@ let instance = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-// export const getHostel=  async (req, res) => {
-//   try {
+export const getAllHostels=  async (req, res) => {
+  try {
     
-//     const hostels = await HostelModel.find({isApproved: "Approved",isBlocked:false}).populate("rooms");
-//     res.status(201).json({success:true,hostels});
-//     console.log(hostels,'userside hostel listing')
-//   } catch (error) {
-//     console.error('Error getting hostel:', error);
-//     res.status(500).json({ error: 'Failed to get hostel' });
-//   }
-// }
+    const hostelList = await HostelModel.find({isApproved: "Approved",isBlocked:false}).populate("rooms");
+    res.status(201).json({success:true,hostelList});
+    console.log(hostelList,'userside hostel listing')
+  } catch (error) {
+    console.error('Error getting hostel:', error);
+    res.status(500).json({ error: 'Failed to get hostel' });
+  }
+}
 export const getHostel = async (req, res) => {
   try {
     const { limit, skip } = req.query;
+    const sharing = req.query.sharing ?? null
+    console.log(sharing)
+    const gender = req.query.gender ? req.query.gender : new RegExp("");
+    const location = req.query.location ? new RegExp(req.query.location, 'i') : new RegExp("");
+    const locations = await HostelModel.find({},{location:1, _id:0}).lean()
+
     console.log(limit, skip);
-    const count = await HostelModel.find({isApproved: "Approved",isBlocked:false}).count();
+    let count;
+    if(sharing){
+      count = await HostelModel.find({isApproved: "Approved",isBlocked:false, hostelType:gender, location, roomShares:sharing}).count();
+    }else{
+      count = await HostelModel.find({isApproved: "Approved",isBlocked:false, hostelType:gender, location }).count();
+  }
     let hostelList = [];
-    if (limit) {
-      hostelList = await HostelModel.find({isApproved: "Approved",isBlocked:false}).populate("rooms")
+    if (limit && sharing) {
+      hostelList = await HostelModel.find({isApproved: "Approved",isBlocked:false,  hostelType:gender, location, roomShares:sharing}).populate("rooms")
         .skip(skip ?? 0)
         .limit(limit)
         .sort({ _id: -1 });
-    } else {
-      hostelList = await HostelModel.find({isApproved: "Approved",isBlocked:false}).populate("rooms")
+    }
+    else if (limit) {
+      hostelList = await HostelModel.find({isApproved: "Approved",isBlocked:false,hostelType: gender, location}).populate("rooms")
+        .skip(skip ?? 0)
+        .limit(limit)
+        .sort({ _id: -1 });
+    }
+     else {
+      hostelList = await HostelModel.find({isApproved: "Approved",isBlocked:false, gender, location}).populate("rooms")
         .skip(skip ?? 0)
         .sort({ _id: -1 });
     }
-    res.status(201).json({ hostelList, count, limit, skip });
+    res.status(201).json({ hostelList, count, limit, skip, locations });
   } catch (error) {
     console.error("Error getting hostel:", error);
     res.status(500).json({ error: "Failed to fetch hostel" });
@@ -59,11 +78,11 @@ export const bookRoom=  async (req, res) => {
 }
 export const editUserProfile=  async (req, res) => {
   try {
-    const {id, fullName, address,  contactNumber} = req.body
+    const {id, fullName, address,  contactNumber, gender} = req.body
     console.log(id)
     const editUser = await UserModel.findByIdAndUpdate(id, {
       $set:{
-        fullName, address,  contactNumber
+        fullName, address,  contactNumber, gender
       }
     })
     res.status(201).json({success:true,editUser, err:false});
@@ -106,10 +125,24 @@ export const getRoomsByHostel=  async (req, res) => {
 }
 export const getBookings=  async (req, res) => {
   try {
-    const {id} = req.params;
-    const bookings = await roomBookingModel.find({userId:id}).populate('roomId hostelId')
-    console.log('response in booking hosteldetails',bookings)
-    res.status(201).json({success:true,bookings,err:false});
+    const { userId,limit, skip } = req.query;
+    // const booking = await roomBookingModel.find({userId}).populate('roomId hostelId')
+//
+const count = await roomBookingModel.find({userId}).count();
+let bookings = [];
+if (limit) {
+  bookings = await roomBookingModel.find({userId}).populate('roomId hostelId')
+    .skip(skip ?? 0)
+    .limit(limit)
+    .sort({ _id: -1 });
+} else {
+  bookings = await roomBookingModel.find({userId}).populate('roomId hostelId')
+    .skip(skip ?? 0)
+    .sort({ _id: -1 });
+}
+//
+
+res.status(201).json({ bookings, count, limit, skip });
     console.log('profile booking fetch successfully')
   } catch (error) {
     console.error('Error updating:', error);
@@ -149,4 +182,25 @@ export const cancelBooking=  async (req, res) => {
     console.error('Error updating:', error);
     res.status(500).json({ err:true, error: 'Failed to cancel booking' });
   }
+}
+
+export const addComplaint=async (req,res)=> {
+ try {
+  const complaint = await ComplaintModel.create(req.body)
+  console.log('vhvcbbjbj',req.body);
+  res.status(201).json({success:true ,err:false,complaint});
+ } catch (error) {
+  console.error('Error registering complaint:', error);
+    res.status(500).json({ err:true, error: 'Failed to add complaint' });
+ } 
+}
+export const getComplaints=async (req,res)=> {
+ try {
+  const {userId}=req.query
+  const complaints = await ComplaintModel.find({userId}).populate('hostelId')
+  res.status(201).json({success:true ,err:false,complaints});
+ } catch (error) {
+  console.error('Error registering complaint:', error);
+    res.status(500).json({ err:true, error: 'Failed to fetch complaint' });
+ } 
 }

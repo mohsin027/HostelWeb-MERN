@@ -7,6 +7,7 @@ import AdminLogin from "../components/admin/AdminLogin";
 import AdminHome from "../components/admin/AdminHome";
 import AdminHostels from "../components/admin/AdminHostels";
 import AdminUsers from "../components/admin/AdminUsers";
+import AdminComplaintsPage from "../pages/admin/AdminComplaintsPage";
 
 const AdminRoutes = () => {
   const { admin, adminRefresh } = useSelector((state) => state.auth);
@@ -35,6 +36,7 @@ const AdminRoutes = () => {
             <Route exact path="/" element={<AdminHome/>} />
             <Route exact path="/hostels" element={<AdminHostels/>} />
             <Route exact path="/users" element={<AdminUsers/>} />
+            <Route exact path="/complaints" element={<AdminComplaintsPage/>} />
           </>
         )}
         {admin?.login===false && (

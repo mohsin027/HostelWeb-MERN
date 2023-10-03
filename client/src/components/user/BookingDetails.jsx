@@ -18,19 +18,33 @@ import moment from "moment";
 import mySwal from "../../utils/sweetalert";
 import { ClipLoader } from "react-spinners";
 import toast from "react-hot-toast";
+import { Pagination } from "@mui/material";
 
 export default function BookingDetails() {
   const { user } = useSelector((state) => state.auth.user);
   const [bookingData, setBookingData] = useState([]);
-  const [refresh, setRefresh] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [limit, setLimit] = useState(5);
+  const [skip, setSkip] = useState(0);
+  const [page, setPage] = useState(1);
+  const [count, setCount] = useState(1);
 
   const getBookings = async () => {
     try {
-      const { data } = await axios.get("/user/bookings/" + user._id);
-      const bookings = data.bookings;
+      // const { data } = await axios.get("/user/bookings/" + user._id);
+      const response = await axios.get("/user/bookings/", {
+        params: { userId: user._id, skip: (page - 1) * limit, limit },
+      });
+      const bookings = response.data.bookings;
+      const count = response.data.count;
+      if (bookings) {
+        setBookingData(bookings);
+      }
+      if (count) {
+        setCount(Math.ceil(count / limit));
+      }
       console.log("user room bookings in profile comp", bookings);
-      setBookingData(bookings);
       console.log(bookingData);
     } catch (error) {
       console.log(error);
@@ -49,7 +63,7 @@ export default function BookingDetails() {
       console.log("success", cancelledBooking);
       setIsLoading(false);
       setRefresh(!refresh);
-      toast.success('Succefully cancelled')
+      toast.success("Succefully cancelled");
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -57,11 +71,27 @@ export default function BookingDetails() {
   };
   useEffect(() => {
     getBookings();
-  }, [refresh]);
+  }, [refresh, page, limit]);
+
+  const handlePageChange = async (event, value) => {
+    setPage(value);
+
+    setSkip(page * limit);
+
+    console.log("skip", skip);
+    setRefresh(!refresh);
+  };
+  console.log("value", "page", page);
+  const handleItemsPerPage = async (e) => {
+    setLimit(e.target.value);
+
+    console.log(e.target.value);
+    setRefresh(!refresh);
+  };
 
   return (
     <>
-      <section className="container pb-5">
+      <section className="container pb-2">
         <MDBRow>
           <MDBCol>
             <MDBCard>
@@ -73,12 +103,24 @@ export default function BookingDetails() {
                   <MDBTable>
                     <MDBTableHead>
                       <tr>
-                        <th>Hostel Name</th>
-                        <th>Room Name</th>
-                        <th>Amount</th>
-                        <th>Check In</th>
-                        <th>Valid till</th>
-                        <th>Action</th>
+                        <th>
+                          <h5>Hostel Name</h5>
+                        </th>
+                        <th>
+                          <h5>Room Name</h5>
+                        </th>
+                        <th>
+                          <h5>Amount</h5>
+                        </th>
+                        <th>
+                          <h5>Check In</h5>
+                        </th>
+                        <th>
+                          <h5>Valid Till</h5>
+                        </th>
+                        <th>
+                          <h5>Action</h5>
+                        </th>
                       </tr>
                     </MDBTableHead>
                     <MDBTableBody>
@@ -89,11 +131,11 @@ export default function BookingDetails() {
                           <td>{item.amount}</td>
                           <td>{moment(item.checkIn).format("DD-MM-YYYY")}</td>
                           <td>
-                            <p className="fw-normal mb-1">
+                            <span className="fw-normal mb-1">
                               {moment(item.checkIn)
                                 .add(1, "M")
                                 .format("DD-MM-YYYY")}
-                            </p>
+                            </span>
                           </td>
                           <td>
                             {item.status === "active" ? (
@@ -126,6 +168,27 @@ export default function BookingDetails() {
                       <MDBTabsItem></MDBTabsItem>
                     </MDBTableBody>
                   </MDBTable>
+                  <div className="d-flex justify-content-between">
+                    <Pagination
+                      count={count}
+                      page={page}
+                      onChange={handlePageChange}
+                    />
+                    <div className="d-flex w-10 align-items-center">
+                      <span className="m-2">view</span>
+                      <select
+                        name="limit"
+                        className=""
+                        id=""
+                        onChange={handleItemsPerPage}
+                      >
+                        <option value={5}>5</option>
+                        <option value={25}>25</option>
+                        <option value={50}>50</option>
+                      </select>
+                      <span className="m-2">items</span>
+                    </div>
+                  </div>
                 </MDBCardText>
               </MDBCardBody>
             </MDBCard>

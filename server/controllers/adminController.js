@@ -1,3 +1,4 @@
+import ComplaintModel from "../models/complaintModel.js";
 import HostelModel from "../models/hostelModel.js";
 import roomBookingModel from "../models/roomBookingModel.js";
 import UserModel from "../models/userModel.js";
@@ -175,3 +176,49 @@ const activeBookingsCount = activeBookings.length;
   res.status(500).json({ err: true, error: "Failed to fetch data" });
  }
 }
+
+export const getComplaints=async (req,res)=> {
+  try {
+
+   const complaints = await ComplaintModel.find().sort({createdAt:-1}).populate('hostelId userId')
+   res.status(201).json({success:true ,err:false,complaints});
+  } catch (error) {
+   console.error('Error registering complaint:', error);
+     res.status(500).json({ err:true, error: 'Failed to fetch complaint' });
+  } 
+ }
+
+ export const changeComplaintStatus = async (req, res) => {
+  try {
+    const { stat, id } = req.body;
+    if (!stat)
+      return res
+        .status(201)
+        .json({ err: true, message: "status validation failed" });
+    if (!id)
+      return res
+        .status(201)
+        .json({ err: true, message: "id validation failed" });
+    const complaint = await ComplaintModel.findByIdAndUpdate(id, {
+      $set: { status: stat },
+    });
+    console.log(complaint, "status2");
+    res.status(201).json({ error: false, complaint });
+  } catch (error) {
+    console.error("Error creating hostel:", error);
+    res.status(500).json({ err: true, error: "Failed to fetch hostel" });
+  }
+};
+
+export const getBarChartData= async (req,res)=>{
+  try {
+   const hostels = await HostelModel.find().populate('rooms')
+   const users = await UserModel.find()
+   const bookings = await roomBookingModel.find()
+ 
+   res.status(201).json({ err: false, message:'success',hostels,users,bookings });
+  } catch (error) {
+   console.log(error);
+   res.status(500).json({ err: true, error: "Failed to fetch data" });
+  }
+ }

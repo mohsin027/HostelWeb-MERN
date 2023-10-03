@@ -10,6 +10,7 @@ import HostelHomePage from '../pages/hostel/HostelHomePage'
 import HosteTablePage from '../pages/hostel/HosteTablePage'
 import RoomHomePage from '../pages/hostel/RoomHomePage'
 import RoomBookingPage from '../pages/hostel/RoomBookingPage'
+import HostelComplaintPage from '../pages/hostel/HostelComplaintPage'
 // import { AddHostelPage } from '../pages/hostel/AddHostelPage'
 
 
@@ -41,6 +42,7 @@ const HostelRoutes = () => {
           <Route path="/hostel/:hostelId" element={<RoomHomePage />} />
           <Route path="/hostels" element={<HosteTablePage />} />
           <Route path="/bookings" element={<RoomBookingPage/>} />
+          <Route path="/complaints" element={<HostelComplaintPage/>} />
           <Route path="/" element={<HostelHomePage />} />
         </>
       )}

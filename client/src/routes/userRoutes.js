@@ -10,11 +10,13 @@ import axios from 'axios';
 import { HostelDetailPage } from "../pages/user/HostelDetailPage";
 import UserProfilePage from "../pages/user/UserProfilePage";
 import RoomBookingSuccessPage from "../pages/user/RoomBookingSuccessPage";
+import UserGAuthCallback from "../pages/user/UserGAuthCallbach";
 
 const UserRoutes = () => {
   const { user, userRefresh } = useSelector((state) => state.auth);
   useEffect(() => {
     checkUserLoggedIn();
+    fetchData();
   }, [userRefresh]);
   const dispatch = useDispatch();
   const checkUserLoggedIn = async () => {
@@ -28,6 +30,19 @@ const UserRoutes = () => {
   };
   console.log(user)
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("/user/getAllHostels");
+      const data = await response.data.hostelList;
+      // const count = await response.data.count;
+     
+      dispatch({ type: "SET-HOSTEL-DATA", payload: data });
+      console.log("response:", data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+ 
   return (
     <>
       <Routes>
@@ -45,6 +60,7 @@ const UserRoutes = () => {
           <>
             <Route path="/login" element={<UserLogin />} />
             <Route path="/register" element={<UserRegister />} />
+            <Route path="/google/callback" element={<UserGAuthCallback />} />
             <Route path="/*" element={<Navigate to="/login" />} />
           </>
         )}

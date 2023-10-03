@@ -24,6 +24,7 @@ import axios from "axios";
 import { ImageTOBase, isValidFileUploaded } from "../actions/imageToBase64";
 import toast from "react-hot-toast";
 import { DatePicker } from "antd";
+import moment from "moment";
 
 export default function RoomDetailsModal({
   open,
@@ -38,28 +39,38 @@ export default function RoomDetailsModal({
 }) {
   const toggleShow = (e) => {e.preventDefault(),setOpen(!open)};
   function formatDateToDefault(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); 
-    const day = String(date.getDate()).padStart(2, "0");
-    const formattedDate = `${year}-${month}-${day}`;
+    // const date = new Date(dateString);
+    // date.setHours(0,0,0,0)
+    // const year = date.getFullYear();
+    // const month = String(date.getMonth() + 1).padStart(2, "0"); 
+    // const day = String(date.getDate()).padStart(2, "0");
+    // const formattedDate = `${year}-${month}-${day}`;
+    const formattedDate=moment(dateString).format("YYYY-MM-DD")
+    console.log(formattedDate);
     return formattedDate;
   }
   
+
+
   const handleDateChange = (e) => {
     e.preventDefault();
-    const curDate = new Date()
-    const endDate = new Date(new Date().setDate(new Date().getDate()+6))
-    const newDate = new Date(e.target.value);
-
-    if(newDate >= curDate && newDate <= endDate) {
+   
+    const maxDate =moment(new Date(new Date().setDate(new Date().getDate()+6))).format("YYYY-MM-DD")
+    const minDate =moment(new Date().setHours(0,0,0,0)).format("YYYY-MM-DD")
+  // const curDate = moment(new Date()).format("YYYY-MM-DD")
+  const newDate = moment(e.target.value).format("YYYY-MM-DD")
+    
+  console.log(minDate,maxDate,newDate)
+    if(newDate >= minDate && newDate <= maxDate) {
       setDate(newDate);
     }else{
       toast.error("pleae choose a vald date")
     }
   };
+  const maxDate =moment(new Date(new Date().setDate(new Date().getDate()+6))).format("YYYY-MM-DD")
+  const minDate =moment(new Date().setHours(0,0,0,0)).format("YYYY-MM-DD")
   const handleSubmit = () => {};
-
+  
   return (
     <>
       <MDBModal show={open} setShow={setOpen} tabIndex="-1">
@@ -88,18 +99,7 @@ export default function RoomDetailsModal({
                       src={room.room_image.url??"https://mdbootstrap.com/img/new/slides/041.jpg"}
                       alt="..."
                     />
-                    {/* <MDBCarouselItem
-                      className="w-100 d-block"
-                      itemId={2}
-                      src="https://mdbootstrap.com/img/new/slides/042.jpg"
-                      alt="..."
-                    />
-                    <MDBCarouselItem
-                      className="w-100 d-block"
-                      itemId={3}
-                      src="https://mdbootstrap.com/img/new/slides/043.jpg"
-                      alt="..."
-                    /> */}
+                   
                   </MDBCarousel>
                 </MDBRow>
                 <MDBContainer>
@@ -139,9 +139,13 @@ export default function RoomDetailsModal({
                   </MDBRow>
                   <MDBRow className="">
                       <input
+                      min={minDate}
+                      max={maxDate}
+                      // max={moment(new Date(new Date().setDate(new Date().getDate()+6))).format('YYYY-MM-DD')}
                         type="date"
                         onChange={handleDateChange}
                         value={formatDateToDefault(date)}
+                        // value={moment(date).format('YYYY-MM-DD')}
                         style={{width:"200px"}}
                         className="form-control"
                         id="exampleDatepicker1"

@@ -36,7 +36,7 @@ export default function HostelNavbar() {
       light
       bgColor="light"
     >
-      <MDBContainer>
+      <MDBContainer fluid>
       <div className="d-flex gap-3 align-items-center">
             <Link to={'/hostel'}>
           <h4 className="brand-name d-flex" >

@@ -40,13 +40,14 @@ export default function AdminNavbar() {
       light
       bgColor="light"
     >
-      <MDBContainer className="d-flex" style={{flexWrap:"nowrap"}}>
+      <MDBContainer fluid className="d-flex" style={{flexWrap:"nowrap"}}>
         <div className="d-flex gap-3 align-items-center">
           <h4 className="brand-name d-flex" >
           <RiMenu2Line className="me-3 menu-icon" onClick={()=>dispatch({type:"TOGGLE-ADMIN-SIDEBAR"})}/>
             HostelWeb</h4>
         </div>
-        <div className="w-100 d-flex justify-content-center align-items-center">
+        { window.location.pathname!=="/admin" &&
+          <div className="w-100 d-flex justify-content-center align-items-center">
           <div className="search-box">
             <input type="text" value={searchQuery} onChange={(e)=>dispatch({type:"SET-SEARCH-QUERY", payload:e.target.value})} placeholder="search..." />
             <button>
@@ -54,7 +55,7 @@ export default function AdminNavbar() {
             </button>
           </div>
 
-        </div>
+        </div>}
 
         {/* <MDBCollapse navbar show={showBasic}> */}
 

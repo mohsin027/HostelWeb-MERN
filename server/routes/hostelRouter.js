@@ -1,5 +1,5 @@
 import express from 'express';
-import {  addHostel, changeHostelListing, getBookings, getRoomsByHostel, handleBlockStatus, hostelCheck, updateHostel } from '../controllers/hostelController.js';
+import {  addHostel, changeHostelListing, getBookings, getComplaints, getRoomsByHostel, handleBlockStatus, hostelCheck, updateHostel } from '../controllers/hostelController.js';
 import { addRooms } from '../controllers/roomController.js';
 const router=express.Router();
 
@@ -11,6 +11,7 @@ router.post('/blockStatus',handleBlockStatus)
 router.get('/rooms/:hostelId',getRoomsByHostel)
 router.patch('/updateHostel',updateHostel)
 router.patch('/listingStatus',changeHostelListing )
+router.get('/getComplaints/',getComplaints)
 
 
 

@@ -34,6 +34,7 @@ const LinkItems = [
   { name: 'Home',link:"/admin", icon: FiHome },
   { name: 'Hostels',link:"/admin/hostels", icon: FiTrendingUp },
   { name: 'Users', link:'/admin/users',icon: FiCompass },
+  { name: 'Complaints', link:'/admin/complaints',icon: FiCompass },
 
 ]
 

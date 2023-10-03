@@ -26,6 +26,13 @@ const mySwal = {
             'error'
           )
     },
+    alert: function(title, message){
+        Swal.fire(
+            title,
+            message,
+            'warning'
+          )
+    },
 }
 
 export default mySwal

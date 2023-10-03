@@ -14,10 +14,10 @@ export default function RoomHomePage() {
       <HostelNavbar />
       <div className="d-flex">
         <RoomSidebar hostelId={hostelId} />
-        <div className="m-2">
+        <div className="m-2 w-100">
 
-          <p>RoomHomePage {hostelId}</p>
-          <div>
+          {/* <p>RoomHomePage {hostelId}</p> */}
+          <div >
 
         {/* <Button onClick={() => setOpen(true)}>Add Room</Button> */}
         <RoomTable hostelId={hostelId} />

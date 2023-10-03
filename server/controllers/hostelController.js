@@ -3,6 +3,7 @@ import cloudinary from "../config/cloudinary.js";
 import HostelModel from "../models/hostelModel.js";
 import roomBookingModel from "../models/roomBookingModel.js";
 import RoomModel from "../models/roomModel.js";
+import ComplaintModel from "../models/complaintModel.js";
 
 export const addHostel=  async (req, res) => {
   try {
@@ -150,3 +151,16 @@ export const changeHostelListing=  async (req, res) => {
     res.status(500).json({ err:true, error: 'Failed to fetch hostel' });
   }
 }
+
+export const getComplaints=async (req,res)=> {
+  try {
+   const {hostelAdminId}=req.query
+   const hostels =await HostelModel.find({adminData:hostelAdminId}).select('_id')
+   const hostelIds= hostels.map(hostel =>hostel._id)
+   const complaints = await ComplaintModel.find({hostelId:{$in:hostelIds}}).populate('hostelId userId')
+   res.status(201).json({success:true ,err:false,complaints});
+  } catch (error) {
+   console.error('Error registering complaint:', error);
+     res.status(500).json({ err:true, error: 'Failed to fetch complaint' });
+  } 
+ }

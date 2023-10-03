@@ -29,6 +29,20 @@ function UserLogin() {
     setPassword(e.target.value);
   };
 
+  const handleGoogleLogin = async (e) => {
+    e.preventDefault()
+    let redirectUri = process.env.REACT_APP_SERVER_URL+"/user/auth/google/callback"
+    let clientId = "1038681536837-5apaj089qgtgfftk7apk44bpoa3ll15u.apps.googleusercontent.com"
+    try {
+        window.open(
+            `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=email%20profile`,
+            "_self"
+        )
+    } catch (error) {
+        console.log('Google login error:', error);
+    }
+};
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -81,15 +95,15 @@ function UserLogin() {
     <div className="w-100 text-center">
       Don't Have an account ? <Link to='/register'>Register</Link>
     </div>
+    <MDBBtn className="mb-4 w-100" onClick={handleGoogleLogin} size="lg" style={{backgroundColor: 'white', color:"black"}}>
+      <MDBIcon fab icon="google-g" className="mx-2"/>
+      Continue with Google
+    </MDBBtn>
 
     {/* <div className="divider d-flex align-items-center my-4">
       <p className="text-center fw-bold mx-3 mb-0">OR</p>
     </div>
 
-    <MDBBtn className="mb-4 w-100" size="lg" style={{backgroundColor: '#3b5998'}}>
-      <MDBIcon fab icon="facebook-f" className="mx-2"/>
-      Continue with facebook
-    </MDBBtn>
 
     <MDBBtn className="mb-4 w-100" size="lg" style={{backgroundColor: '#55acee'}}>
       <MDBIcon fab icon="twitter" className="mx-2"/>

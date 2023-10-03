@@ -13,7 +13,7 @@ export const addRooms=  async (req, res) => {
       const {room_no,room_rent,capacity,title,description,hostelId} = req.body
       const newRoom = new RoomModel({room_no,room_rent,capacity,title,description, room_image, hostelId});
       await newRoom.save();
-      const updateHostel=await HostelModel.findByIdAndUpdate(hostelId,{$push:{rooms:newRoom._id}});
+      const updateHostel=await HostelModel.findByIdAndUpdate(hostelId,{$addToSet:{rooms:newRoom._id, roomShares:capacity}});
       console.log(updateHostel,"room added to hostel");
       res.status(201).json({success:true,});
       console.log(newRoom,'new hostel in controller');
