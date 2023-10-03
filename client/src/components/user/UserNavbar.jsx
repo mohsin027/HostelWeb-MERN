@@ -28,6 +28,7 @@ export default function UserNavbar() {
   const navigate=useNavigate()
 
   const {searchQuery} = useSelector((state)=>state.common)
+  const {user} = useSelector((state)=>state.auth.user)
 
 
   const handleLogout = async () => {
@@ -70,16 +71,16 @@ export default function UserNavbar() {
               className="nav-link gap-1 d-flex align-items-center"
               role="button"
             >
-             <Link to={'/user/profile'}>
+             {/* <Link to={'/user/profile'}> */}
               
                 <img
-                src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                src={user?.image?.url ?? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"}
                 className="rounded-circle ms-3"
                 alt="Avatar"
                 height={30}
                 width={30}
                 />
-                </Link> 
+                {/* </Link>  */}
             </MDBDropdownToggle>
             <MDBDropdownMenu>
               <MDBDropdownItem link><Link to={'/user/profile'}>My Account</Link></MDBDropdownItem>

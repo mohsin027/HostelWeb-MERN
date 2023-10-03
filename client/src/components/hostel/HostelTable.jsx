@@ -112,7 +112,7 @@ function HostelTable(props) {
   };
 
   return (
-    <MDBContainer className="pt-3">
+    <MDBContainer className="pt-3 ">
       <h4 className="mt-2 mb-3 ms-1">Hostels</h4>
       <div className="d-flex justify-content-end mb-2">
         <MDBBtn onClick={() => setOpen(true)}>Add Hostel</MDBBtn>
@@ -150,7 +150,7 @@ function HostelTable(props) {
             Rejected
           </MDBBtn>
         </div>
-      <div className="table-responsive">
+      <div className="table-responsive rounded">
         <MDBTable align="middle" striped>
           <MDBTableHead className="" style={{ backgroundColor: "#E7E7E7" }}>
             <tr>
@@ -243,7 +243,7 @@ function HostelTable(props) {
                   </td>
                   <td>
                     <div className="d-flex">
-                      <FiEdit3
+                      <FiEdit3 className="mt-2"
                         type="button"
                         onClick={() => {
                           setOpenEdit(true);
@@ -253,7 +253,7 @@ function HostelTable(props) {
 
                       <MDBDropdown>
                         <MDBDropdownToggle className="transparent-btn drop-btn">
-                          <RiMore2Fill className={""} />
+                          <RiMore2Fill className='' />
                         </MDBDropdownToggle>
 
                         {hostel?.isApproved === "Pending" ? (

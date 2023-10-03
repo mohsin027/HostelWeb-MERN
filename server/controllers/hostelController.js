@@ -164,3 +164,26 @@ export const getComplaints=async (req,res)=> {
      res.status(500).json({ err:true, error: 'Failed to fetch complaint' });
   } 
  }
+
+ export const changeComplaintStatus = async (req, res) => {
+  console.log('hello');
+  try {
+    const { stat, id } = req.body;
+    if (!stat)
+      return res
+        .status(201)
+        .json({ err: true, message: "status validation failed" });
+    if (!id)
+      return res
+        .status(201)
+        .json({ err: true, message: "id validation failed" });
+    const complaint = await ComplaintModel.findByIdAndUpdate(id, {
+      $set: { status: stat },
+    });
+    console.log(complaint, "status2");
+    res.status(201).json({ error: false, complaint });
+  } catch (error) {
+    console.error("Error creating hostel:", error);
+    res.status(500).json({ err: true, error: "Failed to fetch hostel" });
+  }
+};

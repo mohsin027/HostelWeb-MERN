@@ -104,22 +104,22 @@ export default function BookingDetails() {
                     <MDBTableHead>
                       <tr>
                         <th>
-                          <h5>Hostel Name</h5>
+                          <h6>Hostel Name</h6>
                         </th>
                         <th>
-                          <h5>Room Name</h5>
+                          <h6>Room Name</h6>
                         </th>
                         <th>
-                          <h5>Amount</h5>
+                          <h6>Amount</h6>
                         </th>
                         <th>
-                          <h5>Check In</h5>
+                          <h6>Check In</h6>
                         </th>
                         <th>
-                          <h5>Valid Till</h5>
+                          <h6>Valid Till</h6>
                         </th>
                         <th>
-                          <h5>Action</h5>
+                          <h6>Action</h6>
                         </th>
                       </tr>
                     </MDBTableHead>

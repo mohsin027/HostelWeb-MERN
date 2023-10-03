@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import AddComplaintModal from '../../modal/AddComplaintModal';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import moment from 'moment';
 
 export default function UserComplaints() {
   const { user } = useSelector((state) => state.auth.user);
@@ -22,9 +23,9 @@ export default function UserComplaints() {
 
   console.log('user',user,'hostels',hostels);
   return (
-    <section className='container'>
-      <MDBCard>
-        <MDBCardHeader className='d-flex justify-content-between'>
+    <section className='container pb-3'>
+      <MDBCard className=''>
+        <MDBCardHeader className='d-flex justify-content-between '>
           <MDBCardTitle>
 
           Complaints
@@ -32,36 +33,30 @@ export default function UserComplaints() {
           <MDBBtn onClick={()=>setOpen(true)}>Register Complaint</MDBBtn>
         </MDBCardHeader>
         <MDBCardBody>
-          <MDBTable>
+        <MDBTable>
             <MDBTableHead>
-              <tr>
-
+              <tr style={{ fontSize: "1.1rem" }}>
+                <th>Date</th>
                 <th>Complaint Type</th>
                 <th>Description</th>
                 <th>Ref Hostel</th>
                 <th>status</th>
               </tr>
-                
             </MDBTableHead>
             <MDBTableBody>
-              {
-                complaintsData?.map((complaint)=>
-                <tr>
-                  <td>
-                    {complaint.complaintType}
-                  </td>
-                  <td>
-                    {complaint.complaintDescription}
-                  </td>
-                  <td>
-                    {complaint.hostelId?.hostelName || 'na'}
-                  </td>
-                  <td>
-                    {complaint.status || 'na'}
+              {complaintsData?.map((complaint, index) => (
+                <tr key={complaint._id}>
+                  <td>{moment(complaint.createdAt).format("YYYY-MM-DD")}</td>
+                  <td>{complaint.complaintType}</td>
+                  <td>{complaint.complaintDescription}</td>
+                  <td>{complaint.hostelId?.hostelName || "na"}</td>
+                  <td className="d-flex">
+                    {complaint.status || "na"}
+
+                    
                   </td>
                 </tr>
-                )
-              }
+              ))}
             </MDBTableBody>
           </MDBTable>
         </MDBCardBody>
