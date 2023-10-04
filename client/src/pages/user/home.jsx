@@ -193,8 +193,12 @@ function Home() {
       <MDBContainer>
         <Row className=" m-2 mt-5" style={{ minHeight: "500px" }}>
           <div className="d-flex justify-content-between">
-            <Typography variant="h3">Hostel listings</Typography>
-            <div className="d-flex align-items-center">
+            <div className="w-100 d-flex justify-content-center mb-3">
+              <h3>
+             Find Hostels
+              </h3>
+              </div>
+            <div className="d-flex align-items-center ">
              
               {/* <Typography className="mt-3">Filter by</Typography>
               <FormControl sx={{ m: 1, minWidth: 120 }} size="small">

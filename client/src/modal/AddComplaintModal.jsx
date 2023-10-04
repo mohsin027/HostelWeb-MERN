@@ -15,7 +15,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-bootstrap";
-import { Select } from "antd";
+import Select from 'react-select'
 
 export default function AddComplaintModal({ user, hostels, open, setOpen }) {
   //
@@ -119,16 +119,16 @@ export default function AddComplaintModal({ user, hostels, open, setOpen }) {
                   <div className="">
                    <Select
                       placeholder="Select hostel"
-                      value={data.complaintType}
+                      value={data.selectedComplaintType}
                       onChange={(item) => {
                         setData({
                           ...data,
-                          complaintType: item,
+                          complaintType: item.value,
+                          selectedComplaintType:item
                         });
                       }}
                       style={{
                         width: "100%",
-                        zIndex:'99999999'
                       }}
                       options={titleSelectionArray}
                     />
@@ -152,7 +152,6 @@ export default function AddComplaintModal({ user, hostels, open, setOpen }) {
 <span>Description</span>
                 <MDBTextArea
                   wrapperClass="mb-3"
-                  label="Description"
                   id="formControlLg"
                   value={data.description}
                   onChange={handleChange}
@@ -162,19 +161,20 @@ export default function AddComplaintModal({ user, hostels, open, setOpen }) {
                 />
                 <div className="d-flex flex-column">
                   <span className="h6">Select hostel</span>
-                  <div className="" style={{zIndex:100000}}>
+                  <div className="">
                     <Select
                       placeholder="Select hostel"
-                      value={data.hostelId}
+                      value={data.selectedHostel}
                       onChange={(item) => {
+                        console.log(item, data)
                         setData({
                           ...data,
-                          hostelId: item,
+                          hostelId: item.value,
+                          selectedHostel:item,
                         });
                       }}
                       style={{
                         width: "100%",
-                        zIndex:100000 
                       }}
                       options={hostelNameArray}
                     />

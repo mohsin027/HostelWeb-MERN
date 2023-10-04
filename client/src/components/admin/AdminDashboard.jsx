@@ -7,6 +7,8 @@ import {
   MDBRow,
 } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
+import { BiCreditCard, BiUser } from "react-icons/bi";
+import { RiBillFill, RiBillLine } from "react-icons/ri";
 
 export default function AdminDashboard() {
   const [data, setData] = useState({
@@ -49,8 +51,11 @@ export default function AdminDashboard() {
                   <span className="h3 font-bold mb-0">{data.hostelCount}</span>
                 </div>
                 <div className="col-auto">
-                  <div className="icon icon-shape bg-tertiary text-white text-lg rounded-circle">
-                    <i className="bi bi-credit-card" />
+                  <div
+                    style={{ width: "50px", height: "50px" }}
+                    className="icon icon-shape d-flex justify-content-center align-items-center bg-danger text-white text-lg rounded-circle"
+                  >
+                    <BiCreditCard></BiCreditCard>
                   </div>
                 </div>
               </div>
@@ -77,8 +82,11 @@ export default function AdminDashboard() {
                   <span className="h3 font-bold mb-0">{data.userCount}</span>
                 </div>
                 <div className="col-auto">
-                  <div className="icon icon-shape bg-primary text-white text-lg rounded-circle">
-                    <i className="bi bi-people" />
+                  <div
+                    style={{ width: "50px", height: "50px" }}
+                    className="icon icon-shape d-flex justify-content-center align-items-center bg-info text-white text-lg rounded-circle"
+                  >
+                    <BiUser></BiUser>
                   </div>
                 </div>
               </div>
@@ -105,8 +113,11 @@ export default function AdminDashboard() {
                   <span className="h3 font-bold mb-0">{data.bookingCount}</span>
                 </div>
                 <div className="col-auto">
-                  <div className="icon icon-shape bg-info text-white text-lg rounded-circle">
-                    <i className="bi bi-clock-history" />
+                  <div
+                    style={{ width: "50px", height: "50px" }}
+                    className="icon icon-shape d-flex justify-content-center align-items-center bg-warning text-white text-lg rounded-circle"
+                  >
+                    <RiBillFill></RiBillFill>
                   </div>
                 </div>
               </div>
@@ -130,11 +141,16 @@ export default function AdminDashboard() {
                   <span className="h6 font-semibold text-muted text-sm d-block mb-2">
                     Active Bookings
                   </span>
-                  <span className="h3 font-bold mb-0">{data.activeBookingsCount}</span>
+                  <span className="h3 font-bold mb-0">
+                    {data.activeBookingsCount}
+                  </span>
                 </div>
                 <div className="col-auto">
-                  <div className="icon icon-shape bg-warning text-white text-lg rounded-circle">
-                    <i className="bi bi-minecart-loaded" />
+                  <div
+                    style={{ width: "50px", height: "50px" }}
+                    className="icon icon-shape d-flex justify-content-center align-items-center bg-success text-white text-lg rounded-circle"
+                  >
+                    <RiBillLine></RiBillLine>
                   </div>
                 </div>
               </div>
@@ -151,7 +167,6 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }
