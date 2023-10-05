@@ -35,7 +35,6 @@ function ApprovedHostelTable() {
       const hostels = response.data.hostelList;
       const count = response.data.count;
       if (hostels) {
-        // setHostelData(hostels);
         setHostelData(hostels.filter((i) => i.isApproved === "Approved"));
       }
       if (count) {
@@ -48,21 +47,18 @@ function ApprovedHostelTable() {
 
   useEffect(() => {
     checkHostel();
-  }, [openEdit, refresh, page, limit]);
+  }, [openEdit, refresh, page, limit,open]);
 
   const handlePageChange = async (event, value) => {
     setPage(value);
 
     setSkip(page * limit);
 
-    console.log("skip", skip);
     setRefresh(!refresh);
   };
-  console.log("value", "page", page);
   const handleItemsPerPage = async (e) => {
     setLimit(e.target.value);
 
-    console.log(e.target.value);
     setRefresh(!refresh);
   };
 

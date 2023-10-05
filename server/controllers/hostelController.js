@@ -125,8 +125,6 @@ export const updateHostel=  async (req, res) => {
       hostel.hostelName=hostelName
     }
     await hostel.save()
-    // const test= await HostelModel.find({_id})
-    // console.log('test',test)
     res.status(201).json({success:true,hostel, err:false});
     console.log(hostel,'hostel updated successfully')
   } catch (error) {

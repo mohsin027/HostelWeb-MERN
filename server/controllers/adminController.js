@@ -1,6 +1,7 @@
 import ComplaintModel from "../models/complaintModel.js";
 import HostelModel from "../models/hostelModel.js";
 import roomBookingModel from "../models/roomBookingModel.js";
+import RoomModel from "../models/roomModel.js";
 import UserModel from "../models/userModel.js";
 import cron from "node-cron";
 
@@ -146,18 +147,9 @@ export const dashboardData= async (req,res)=>{
   const userCount = await UserModel.find().count()
   const bookings = await roomBookingModel.find()
   const today = new Date();
+  //
 
-// for (const booking of bookings) {
-//   const checkInDate = booking.checkIn;
-//   const checkOutDate = new Date(checkInDate);
-//   checkOutDate.setDate(checkOutDate.getDate() + 30);
 
-//   if (today >= checkInDate && today <= checkOutDate) {
-//     console.log(`Booking ${booking._id} is active.`);
-//   } else {
-//     console.log(`Booking ${booking._id} is not active.`);
-//   }
-// }
 const activeBookings = bookings.filter((booking) => {
   const checkInDate = booking.checkIn;
   const checkOutDate = new Date(checkInDate);
@@ -167,9 +159,8 @@ const activeBookings = bookings.filter((booking) => {
 });
 const activeBookingsCount = activeBookings.length;
 
-//  const activeBooking= booking.filter((item)=>item.checkIn)
   const bookingCount = bookings.length
-  console.log("bookingCount",activeBookings);
+  // console.log("bookingCount",activeBookings);
   res.status(201).json({ err: false, message:'success',hostelCount,userCount,bookingCount,activeBookingsCount });
  } catch (error) {
   console.log(error);
@@ -215,8 +206,26 @@ export const getBarChartData= async (req,res)=>{
    const hostels = await HostelModel.find().populate('rooms')
    const users = await UserModel.find()
    const bookings = await roomBookingModel.find()
+   const roomCapacity=await RoomModel.aggregate([
+    {
+       $group: {
+         _id: null, // Group all documents into a single group
+         totalCapacity: { $sum: "$capacity" } // Sum the capacity of all rooms
+       }
+     }
+   ])
+   const roomOccupancy=await RoomModel.aggregate([
+    {
+       $group: {
+         _id: null, // Group all documents into a single group
+         totalOccupants: { $sum: "$occupants" } // Sum the capacity of all rooms
+       }
+     }
+   ])
+   //
+   console.log('capacity', roomCapacity);
  
-   res.status(201).json({ err: false, message:'success',hostels,users,bookings });
+   res.status(201).json({ err: false, message:'success',hostels,users,bookings,roomCapacity,roomOccupancy });
   } catch (error) {
    console.log(error);
    res.status(500).json({ err: true, error: "Failed to fetch data" });

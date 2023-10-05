@@ -37,14 +37,12 @@ function HostelTable() {
         });
         const hostels = await response.data.hostelList;
         const count = await response.data.count;
-        console.log("hostels", hostels, response);
         if (hostels) {
           setHostelData(hostels);
         }
         if (count) {
           setCount(Math.ceil(count / limit));
         }
-        console.log("response:", hostels);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -63,7 +61,6 @@ function HostelTable() {
       if (!data.err) {
         const hostels = hostelData;
         hostels[index].isApproved = status;
-        // setHostelData([...hostels]);
         toast.success("Successfully " + status);
         setRefresh(!refresh);
       } else {

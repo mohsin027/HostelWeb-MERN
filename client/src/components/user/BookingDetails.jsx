@@ -44,8 +44,7 @@ export default function BookingDetails() {
       if (count) {
         setCount(Math.ceil(count / limit));
       }
-      console.log("user room bookings in profile comp", bookings);
-      console.log(bookingData);
+    
     } catch (error) {
       console.log(error);
     }
@@ -132,16 +131,26 @@ export default function BookingDetails() {
                           <td>{moment(item.checkIn).format("DD-MM-YYYY")}</td>
                           <td>
                             <span className="fw-normal mb-1">
-                              {moment(item.checkIn)
-                                .add(1, "M")
+                              {moment(item.expiry)
+                                // .add(1, "M")
                                 .format("DD-MM-YYYY")}
                             </span>
                           </td>
+                          {/* <td>
+                            {moment(curDate).format('YYYY-MM-DD')<moment(item.checkIn).format('YYYY-MM-DD') ? 
+                           'cancel'
+                           :
+                            true
+                            ?
+                            'equal'
+                            : "no equal"
+                           }
+                          </td> */}
                           <td>
-                            {item.status === "active" ? (
+                            {moment(curDate).format('YYYY-MM-DD')<moment(item.checkIn).format('YYYY-MM-DD') ? 
                               <MDBBtn
                                 disabled={
-                                  curDate <= item.checkIn || isLoading === true
+                                  isLoading === true
                                 }
                                 onClick={() => handleCancel(item._id)}
                               >
@@ -152,11 +161,12 @@ export default function BookingDetails() {
                                 ></ClipLoader>
                                 Cancel
                               </MDBBtn>
-                            ) : item.status === "cancelled" ? (
+                             : item.status === "cancelled" ? 
                               <span>cancelled</span>
-                            ) : (
-                              "expired"
-                            )}
+                             ? item.status : "expired"
+                            : 
+                              "active"
+                            }
                           </td>
                           {/* <td>{user?.hostelData?.hostelId.hostelName}</td>
                         <td>{user?.hostelData?.roomId.title}</td>

@@ -19,7 +19,6 @@ try {
     "/hostelAdmin/hostelRegisterVerify",
     {  otp, ...props.data })
     const data=await response.data
-    console.log(data,'otp submitted');
     if(data){
     <Navigate to='/'/>
     }

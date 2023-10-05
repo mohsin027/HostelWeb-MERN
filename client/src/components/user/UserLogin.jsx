@@ -20,6 +20,9 @@ function UserLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  // const [forgetPassword, setForgetPassword]= useState("");
+  // const [forgetPasswordEmail, setForgetPasswordEmail]= useState("");
+  // const [forgetPasswordComp, setForgetPasswordComp]= useState("");
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -88,7 +91,7 @@ function UserLogin() {
             </div>
             }
     <div className="d-flex justify-content-between mb-4">
-      <a href="!#">Forgot password?</a>
+      {/* <a href="!#">Forgot password?</a> */}
     </div>
 
     <MDBBtn className="mb-4 w-100" size="lg">Sign in</MDBBtn>

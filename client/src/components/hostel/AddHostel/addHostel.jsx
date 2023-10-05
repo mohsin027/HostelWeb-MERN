@@ -67,13 +67,10 @@ console.log(data)
       const { data: responseData } = await axios.post("/hostel/hostel/addHostel", {
         ...data,
       });
-      console.log(responseData);
       if (responseData.err) {
         setError(responseData.message);
         return;
       }
-      // dispatch({ type: "REFRESH-HOSTEL" });
-      
       navigate('/hostel')
     } catch (error) {
       setIsLoading(false);

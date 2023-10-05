@@ -11,6 +11,8 @@ export default function AdminHome() {
   const [hostels, setHostels] = useState([]);
   const [users, setUsers] = useState([]);
   const [bookings, setBookings] = useState([]);
+  const [capacity, setCapacity] = useState([]);
+  const [occupants, setOccupants] = useState([]);
 
   const getBarChartData = async () => {
     try {
@@ -18,18 +20,19 @@ export default function AdminHome() {
       setHostels(data.hostels);
       setUsers(data.users);
       setBookings(data.bookings);
+      setCapacity(data.roomCapacity[0].totalCapacity);
+      setOccupants(data.roomOccupancy[0].totalOccupants);
 
-      console.log("data", data);
+
     } catch (error) {
       console.error(error.message);
     }
   };
-
   useEffect(() => {
     getBarChartData();
   }, []);
 
-   const mensHostels = hostels.filter(
+  const mensHostels = hostels.filter(
     (item) => item.hostelType === "men"
   ).length;
   const womensHostels = hostels.filter(
@@ -64,7 +67,8 @@ export default function AdminHome() {
     return monthlyData;
   };
 
-  console.log(calculateMonthWiseTotal());
+  // console.log(calculateMonthWiseTotal());
+  // console.log('total capacity',capacity);
 
   return (
     <>
@@ -76,7 +80,7 @@ export default function AdminHome() {
           <BookingTrendChart
             calculateMonthWiseTotal={calculateMonthWiseTotal}
           />
-          <AdminPieChart hostelTypeArray={hostelTypeArray}></AdminPieChart>
+          <AdminPieChart hostelTypeArray={hostelTypeArray} occupants={occupants} capacity={capacity}></AdminPieChart>
         </div>
       </div>
       {/* <DashboardLayout/> */}

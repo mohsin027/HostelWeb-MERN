@@ -39,7 +39,6 @@ export default function UserTable() {
         if (users) {
           setUserData(users);
         }
-        console.log("response:", response);
         if (count) {
           setCount(Math.ceil(count / limit));
         }

@@ -23,7 +23,7 @@ export default function AdminDashboard() {
     const userCount = response.data.userCount;
     const bookingCount = response.data.bookingCount;
     const activeBookingsCount = response.data.activeBookingsCount;
-    console.log("data in dashboard", hostelCount);
+ 
     setData({
       ...data,
       hostelCount: hostelCount,

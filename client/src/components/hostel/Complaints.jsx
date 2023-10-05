@@ -61,7 +61,6 @@ export default function Complaints() {
     }
   };
 
-  console.log("user", user, "hostels", hostel);
   return (
     <section className="container mt-5">
       <MDBCard>

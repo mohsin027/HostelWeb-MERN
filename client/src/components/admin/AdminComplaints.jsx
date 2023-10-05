@@ -48,9 +48,7 @@ export default function AdminComplaints() {
         id,
       });
       if (!data.error) {
-        // const hostels = hostelData;
-        // hostels[index].isApproved = status;
-        // setHostelData([...hostels]);
+
         toast.success("Successfully " + status);
         setRefresh(!refresh);
       } else {
@@ -62,7 +60,6 @@ export default function AdminComplaints() {
     }
   };
 
-  //   console.log('user',user,'hostels',hostel);
   return (
     <section className="container mt-3">
       <MDBCard>

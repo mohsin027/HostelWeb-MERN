@@ -45,7 +45,6 @@ function AdminLogin() {
         email,
         password,
       });
-      console.log(data);
       if (data.err) {
         setError(data.message);
         setIsLoading(false);

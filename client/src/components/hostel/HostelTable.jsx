@@ -56,7 +56,7 @@ function HostelTable(props) {
 
   useEffect(() => {
     checkHostel();
-  }, [openEdit, refresh, page, limit,filter]);
+  }, [openEdit, refresh, page, limit,filter,open]);
 
   const handleListing = async (listing, id, index) => {
     const { isConfirmed } = await mySwal.confirm("Are You sure ");
@@ -238,7 +238,7 @@ function HostelTable(props) {
                     {hostel?.isApproved === "Approved" ? (
                       <MDBBtn>ACTIVE</MDBBtn>
                     ) : (
-                      <MDBBtn color="info">view & reapply</MDBBtn>
+                      <span color="info">reapply</span>
                     )}
                   </td>
                   <td>
@@ -256,26 +256,31 @@ function HostelTable(props) {
                           <RiMore2Fill className='' />
                         </MDBDropdownToggle>
 
-                        {hostel?.isApproved === "Pending" ? (
-                          <MDBDropdownMenu>
-                            <MDBDropdownItem
-                              link
-                              onClick={() =>
-                                handleStatus("Approved", hostel._id, index)
-                              }
-                            >
-                              Approve
-                            </MDBDropdownItem>
-                            <MDBDropdownItem
-                              link
-                              onClick={() =>
-                                handleStatus("Rejected", hostel._id, index)
-                              }
-                            >
-                              Reject
-                            </MDBDropdownItem>
-                          </MDBDropdownMenu>
-                        ) : hostel.isBlocked === false ? (
+                        {
+                        // hostel?.isApproved === "Pending" ? (
+                        //   <MDBDropdownMenu>
+                        //     <MDBDropdownItem
+                        //       link
+                        //       onClick={() =>
+                        //         handleStatus("Approved", hostel._id, index)
+                        //       }
+                        //     >
+                        //       Approve
+                        //     </MDBDropdownItem>
+                        //     <MDBDropdownItem
+                        //       link
+                        //       onClick={() =>
+                        //         handleStatus("Rejected", hostel._id, index)
+                        //       }
+                        //     >
+                        //       Reject
+                        //     </MDBDropdownItem>
+                        //   </MDBDropdownMenu>
+                        // ) 
+                        // :
+                        hostel.isApproved==="Approved" &&
+                        (                        
+                        hostel.isBlocked === false ? (
                           <MDBDropdownMenu>
                             <MDBDropdownItem
                               link
@@ -297,7 +302,9 @@ function HostelTable(props) {
                               List
                             </MDBDropdownItem>
                           </MDBDropdownMenu>
-                        )}
+                        )
+                        )
+                        }
                       </MDBDropdown>
                     </div>
                   </td>

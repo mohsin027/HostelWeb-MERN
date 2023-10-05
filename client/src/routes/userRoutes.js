@@ -5,7 +5,6 @@ import Home from "../pages/user/home";
 import UserLogin from "../pages/user/UserLogin";
 import UserRegister from "../pages/user/UserRegister";
 import { useDispatch, useSelector } from "react-redux";
-import NavMain from "../components/user/Navbar";
 import axios from 'axios';
 import { HostelDetailPage } from "../pages/user/HostelDetailPage";
 import UserProfilePage from "../pages/user/UserProfilePage";
