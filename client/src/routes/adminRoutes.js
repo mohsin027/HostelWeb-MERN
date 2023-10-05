@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from 'axios';
+import axios from "axios";
 import AdminLogin from "../components/admin/AdminLogin";
 import AdminHome from "../components/admin/AdminHome";
 import AdminHostels from "../components/admin/AdminHostels";
@@ -18,14 +18,14 @@ const AdminRoutes = () => {
   const checkAdminLoggedIn = async () => {
     try {
       const { data } = await axios.get("/admin/auth/login/check");
-      console.log(data)
+      console.log(data);
       dispatch({ type: "SET-ADMIN", payload: data });
     } catch (e) {
-    console.log("error", e)
+      console.log("error", e);
       dispatch({ type: "SET-ADMIN", payload: { loggedIn: false } });
     }
   };
-  console.log(admin)
+  console.log(admin);
 
   return (
     <>
@@ -33,13 +33,13 @@ const AdminRoutes = () => {
         {admin?.login && (
           <>
             <Route path="/login" element={<Navigate to="/admin/" />} />
-            <Route exact path="/" element={<AdminHome/>} />
-            <Route exact path="/hostels" element={<AdminHostels/>} />
-            <Route exact path="/users" element={<AdminUsers/>} />
-            <Route exact path="/complaints" element={<AdminComplaintsPage/>} />
+            <Route exact path="/" element={<AdminHome />} />
+            <Route exact path="/hostels" element={<AdminHostels />} />
+            <Route exact path="/users" element={<AdminUsers />} />
+            <Route exact path="/complaints" element={<AdminComplaintsPage />} />
           </>
         )}
-        {admin?.login===false && (
+        {admin?.login === false && (
           <>
             <Route path="/login" element={<AdminLogin />} />
             <Route path="/*" element={<Navigate to="/admin/login" />} />
