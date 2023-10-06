@@ -3,6 +3,7 @@ import { addComplaint, bookRoom, cancelBooking, editUserProfile, editUserProfile
 import { paymentOrder, verifyPayment } from '../controllers/paymentController.js';
 const router=express.Router();
 
+
 // router.post('/addHostel',addHostel)
 router.get('/hostel',getHostel)
 router.get('/getAllHostels',getAllHostels)

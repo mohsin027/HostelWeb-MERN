@@ -16,6 +16,7 @@ const theme = extendTheme();
 
 function App() {
   axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
+  console.log('process.env.REACT_APP_SERVER_URL', axios.defaults.baseURL);
   axios.defaults.withCredentials = true;
   return (
     <ChakraProvider theme={theme} resetCSS>

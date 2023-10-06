@@ -4,4 +4,6 @@
 /mdb-client
 
 /client/.env
+/client/.env.developemt
+/client/.env.production
 /server/.env

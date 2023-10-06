@@ -19,7 +19,7 @@ dbConfig();
 app.use(
   cors({
       credentials: true,
-      origin: ['http://localhost:3000']
+      origin: ['http://localhost:3000', 'https://hostelsweb.netlify.app','http://hostelsweb.netlify.app']
     })
     );
     
