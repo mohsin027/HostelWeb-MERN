@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import mySwal from "../../utils/sweetalert";
 import { useNavigate } from "react-router-dom";
+import logger from "../../utils/logger";
 
 function Home() {
   const { searchQuery } = useSelector((state) => state.common);
@@ -31,15 +32,14 @@ function Home() {
   const [count, setCount] = useState(1);
   const [limit, setLimit] = useState(5);
   const [skip, setSkip] = useState(0);
-  const [locations, setLocations] = useState([])
+  const [locations, setLocations] = useState([]);
   const dispatch = useDispatch();
   const [filter, setFilter] = useState({
-    gender:"",
-    sharing:"",
-    location:"",
+    gender: "",
+    sharing: "",
+    location: "",
   });
   const navigate = useNavigate();
-
 
   useEffect(() => {
     if (!user.gender) {
@@ -61,19 +61,19 @@ function Home() {
         if (count) {
           setCount(Math.ceil(count / limit));
         }
-        let hostelLocations = response.data.locations.map((hostel)=>{
-          return hostel.location.toLowerCase().trim()
-        })
-      
-        hostelLocations= new Set(hostelLocations)
-
-        let locationsArray=[ ...hostelLocations].map((location)=>{
-          return {label:location, value:location}
+        let hostelLocations = response.data.locations.map((hostel) => {
+          return hostel.location.toLowerCase().trim();
         });
-      
-        setLocations([{value:"", label:"All"}, ...locationsArray])
+
+        hostelLocations = new Set(hostelLocations);
+
+        let locationsArray = [...hostelLocations].map((location) => {
+          return { label: location, value: location };
+        });
+
+        setLocations([{ value: "", label: "All" }, ...locationsArray]);
         dispatch({ type: "SET-HOSTEL-DATA", payload: data });
-        console.log("response:", data);
+        // logger(response,'logger')
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -83,7 +83,6 @@ function Home() {
 
   const handleChange = (e) => {
     e.preventDefault();
-    console.log(e.target.value);
     if (e.target.value) {
       setGenderFilter(e.target.value);
       setRefresh(!refresh);
@@ -93,47 +92,36 @@ function Home() {
   };
   const handlePageChange = async (event, value) => {
     setPage(value);
-
     setSkip(page * limit);
-
-    console.log("skip", skip);
     setRefresh(!refresh);
   };
-  console.log("value", "page", page);
   const handleItemsPerPage = async (e) => {
     setLimit(e.target.value);
-
-    console.log(e.target.value);
     setRefresh(!refresh);
   };
 
-
-
-  const shares=[
+  const shares = [
     {
-      value:"",
-      label:"All"
+      value: "",
+      label: "All",
     },
     {
-      value:"1",
-      label:"Single"
+      value: "1",
+      label: "Single",
     },
     {
-      value:"2",
-      label:"Two sharing"
+      value: "2",
+      label: "Two sharing",
     },
     {
-      value:"3",
-      label:"Three sharing"
+      value: "3",
+      label: "Three sharing",
     },
     {
-      value:"4",
-      label:"Four sharing"
-    }
-
-  ]
-
-
+      value: "4",
+      label: "Four sharing",
+    },
+  ];
 
   // function filterByGender(hostel){
   //   if(hostel.hostelType==filter.gender || filter.gender==""){
@@ -158,26 +146,25 @@ function Home() {
   //   }
   //   return false
   // }
-  function filterBySearch(hostel){
-    if(hostel.hostelName.match(new RegExp(searchQuery, "i")) ||
-    hostel.location.match(new RegExp(searchQuery, "i")) ||
-    hostel.hostelType.match(new RegExp(searchQuery, "i"))
-    ){
-      return true
+  function filterBySearch(hostel) {
+    if (
+      hostel.hostelName.match(new RegExp(searchQuery, "i")) ||
+      hostel.location.match(new RegExp(searchQuery, "i")) ||
+      hostel.hostelType.match(new RegExp(searchQuery, "i"))
+    ) {
+      return true;
     }
-    return false
+    return false;
   }
 
-
   const filteredHostelData = hostelData.filter((hostel) => {
-      return ( 
-        // filterByGender(hostel) &&
-        // filterBySharing(hostel) &&
-        // filterByLocation(hostel) &&
-        filterBySearch(hostel) 
-      ) 
+    return (
+      // filterByGender(hostel) &&
+      // filterBySharing(hostel) &&
+      // filterByLocation(hostel) &&
+      filterBySearch(hostel)
+    );
   });
-  // console.log("filteredHostelData", filteredHostelData);
 
   // useEffect(()=>{
   //   if(filteredHostelData.length===0 && page<count ){
@@ -194,12 +181,9 @@ function Home() {
         <Row className=" m-2 mt-5" style={{ minHeight: "500px" }}>
           <div className="d-flex justify-content-between">
             <div className="w-100 d-flex justify-content-center mb-3">
-              <h3>
-             Find Hostels
-              </h3>
-              </div>
+              <h3>Find Hostels</h3>
+            </div>
             <div className="d-flex align-items-center ">
-             
               {/* <Typography className="mt-3">Filter by</Typography>
               <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                 <InputLabel id="demo-select-small-label">Hostel Type</InputLabel>
@@ -228,21 +212,21 @@ function Home() {
                   <MDBBtn
                     size="sm"
                     color={filter.gender === "" ? "primary" : "light"}
-                    onClick={() => setFilter({...filter, gender:""})}
+                    onClick={() => setFilter({ ...filter, gender: "" })}
                   >
                     All
                   </MDBBtn>
                   <MDBBtn
                     size="sm"
                     color={filter.gender === "men" ? "primary" : "light"}
-                    onClick={() => setFilter({...filter, gender:"men"})}
+                    onClick={() => setFilter({ ...filter, gender: "men" })}
                   >
                     Gents
                   </MDBBtn>
                   <MDBBtn
                     size="sm"
                     color={filter.gender === "women" ? "primary" : "light"}
-                    onClick={() => setFilter({...filter, gender:"women"})}
+                    onClick={() => setFilter({ ...filter, gender: "women" })}
                   >
                     Ladies
                   </MDBBtn>
@@ -253,11 +237,11 @@ function Home() {
                 <div className="">
                   <Select
                     value={filter.location}
-                    onChange={(data)=>{
+                    onChange={(data) => {
                       setFilter({
                         ...filter,
-                        location: data
-                      })
+                        location: data,
+                      });
                     }}
                     style={{
                       width: "100%",
@@ -270,15 +254,14 @@ function Home() {
                 <span className="h6">Room Shares </span>
                 <div className="">
                   <Select
-                    
                     // size={size}
                     // defaultValue="a1"
                     value={filter.sharing}
-                    onChange={(data)=>{
+                    onChange={(data) => {
                       setFilter({
                         ...filter,
-                        sharing: data
-                      })
+                        sharing: data,
+                      });
                     }}
                     style={{
                       width: "100%",
@@ -288,17 +271,15 @@ function Home() {
                 </div>
               </div>
             </div>
-            <div>
-              <MDBContainer>
-                <MDBRow>
-                  {filteredHostelData.map((i, index) => (
-                        <Col key={index} md={4} className="mb-3 p-2">
-                          <HostelListing data={i} />
-                        </Col>
-                    ))}
-                </MDBRow>
-              </MDBContainer>
-            </div>
+            <MDBContainer>
+              <MDBRow>
+                {filteredHostelData.map((i, index) => (
+                  <Col key={index} sm={12} md={12} lg={4} className="p-2">
+                    <HostelListing data={i} />
+                  </Col>
+                ))}
+              </MDBRow>
+            </MDBContainer>
           </div>
         </Row>
         <div className="d-flex justify-content-between my-4">

@@ -13,7 +13,6 @@ export const home = async (req, res) => {
   try {
     const hostel = await HostelAdminModel.find();
     res.status(200).json({ message: "hostel home" });
-    console.log(hostel);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
     console.log(error);
@@ -30,7 +29,7 @@ export const hostelRegister = async function (req, res) {
     let otp = Math.ceil(Math.random() * 1000000);
 
     let otpSent = await otpHelper(email, otp);
-    console.log(otp,'otpSent: ' );
+    console.log(otp, "otpSent: ");
     const token = jwt.sign(
       {
         otp: otp,
@@ -60,12 +59,14 @@ export async function hostelRegisterVerify(req, res) {
     }
     // const hostel = JSON.parse(localStorage.getItem("hostel"));
     const tempHostelToken = req.cookies.tempHostelToken;
-    console.log(tempHostelToken, "temptoken hostel register");
     if (!tempHostelToken) {
       return res.json({ err: true, message: "OTP Session Timed Out" });
     }
 
-    const verifiedTempToken = jwt.verify(tempHostelToken, process.env.JWT_SECRET_KEY);
+    const verifiedTempToken = jwt.verify(
+      tempHostelToken,
+      process.env.JWT_SECRET_KEY
+    );
 
     if (otp != verifiedTempToken.otp) {
       return res.json({ err: true, message: "Invalid OTP" });
@@ -105,8 +106,10 @@ export async function hostelLogin(req, res) {
   try {
     const { email, password } = req.body;
     const hostel = await HostelAdminModel.findOne({ email });
-    if (!hostel) return res.json({ err: true, message: "No hostel admin found" });
-    if (hostel.block) return res.json({ err: true, message: "You are blocked" });
+    if (!hostel)
+      return res.json({ err: true, message: "No hostel admin found" });
+    if (hostel.block)
+      return res.json({ err: true, message: "You are blocked" });
     if (!hostel.password) {
       return res.json({ err: true, message: "Please login" });
     }
@@ -132,31 +135,35 @@ export async function hostelLogin(req, res) {
   }
 }
 
-export const logoutHostel= async(req,res)=>{
-    res.cookie("hostelToken", null, {
+export const logoutHostel = async (req, res) => {
+  res
+    .cookie("hostelToken", null, {
       httpOnly: true,
       secure: true,
       maxAge: 0,
       sameSite: "none",
-  }).json({err:false})}
+    })
+    .json({ err: false });
+};
 
-
-  export const checkHostelLoggedIn = async (req, res) => {
-    try {
-        const hostelToken = req.cookies.hostelToken;
-        if (!hostelToken)
-            return res.json({ loggedIn: false, error: true, message: "no token" });
-        const verifiedJWT = jwt.verify(hostelToken, process.env.JWT_SECRET_KEY);
-        const hostel = await HostelAdminModel.findById(verifiedJWT.id, { password: 0 });
-        if (!hostel) {
-            return res.json({ loggedIn: false });
-        }
-        if (hostel.block) {
-            return res.json({ loggedIn: false });
-        }
-        return res.json({ hostel, loggedIn: true, hostelToken });
-    } catch (err) {
-        console.log(err)
-        res.json({ loggedIn: false, error: err });
+export const checkHostelLoggedIn = async (req, res) => {
+  try {
+    const hostelToken = req.cookies.hostelToken;
+    if (!hostelToken)
+      return res.json({ loggedIn: false, error: true, message: "no token" });
+    const verifiedJWT = jwt.verify(hostelToken, process.env.JWT_SECRET_KEY);
+    const hostel = await HostelAdminModel.findById(verifiedJWT.id, {
+      password: 0,
+    });
+    if (!hostel) {
+      return res.json({ loggedIn: false });
     }
+    if (hostel.block) {
+      return res.json({ loggedIn: false });
+    }
+    return res.json({ hostel, loggedIn: true, hostelToken });
+  } catch (err) {
+    console.log(err);
+    res.json({ loggedIn: false, error: err });
   }
+};

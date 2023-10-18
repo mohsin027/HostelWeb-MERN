@@ -35,48 +35,52 @@ export default function RoomDetailsModal({
   genderMatch,
   date,
   setDate,
-  admissionFees
+  admissionFees,
 }) {
-  const toggleShow = (e) => {e.preventDefault(),setOpen(!open)};
+  const toggleShow = (e) => {
+    e.preventDefault(), setOpen(!open);
+  };
   function formatDateToDefault(dateString) {
     // const date = new Date(dateString);
     // date.setHours(0,0,0,0)
     // const year = date.getFullYear();
-    // const month = String(date.getMonth() + 1).padStart(2, "0"); 
+    // const month = String(date.getMonth() + 1).padStart(2, "0");
     // const day = String(date.getDate()).padStart(2, "0");
     // const formattedDate = `${year}-${month}-${day}`;
-    const formattedDate=moment(dateString).format("YYYY-MM-DD")
-    console.log(formattedDate);
+    const formattedDate = moment(dateString).format("YYYY-MM-DD");
     return formattedDate;
   }
-  
-
 
   const handleDateChange = (e) => {
     e.preventDefault();
-   
-    const maxDate =moment(new Date(new Date().setDate(new Date().getDate()+6))).format("YYYY-MM-DD")
-    const minDate =moment(new Date().setHours(0,0,0,0)).format("YYYY-MM-DD")
-  // const curDate = moment(new Date()).format("YYYY-MM-DD")
-  const newDate = moment(e.target.value).format("YYYY-MM-DD")
-    
-  console.log(minDate,maxDate,newDate)
-    if(newDate >= minDate && newDate <= maxDate) {
+
+    const maxDate = moment(
+      new Date(new Date().setDate(new Date().getDate() + 6))
+    ).format("YYYY-MM-DD");
+    const minDate = moment(new Date().setHours(0, 0, 0, 0)).format(
+      "YYYY-MM-DD"
+    );
+    // const curDate = moment(new Date()).format("YYYY-MM-DD")
+    const newDate = moment(e.target.value).format("YYYY-MM-DD");
+
+    if (newDate >= minDate && newDate <= maxDate) {
       setDate(newDate);
-    }else{
-      toast.error("pleae choose a vald date")
+    } else {
+      toast.error("pleae choose a vald date");
     }
   };
-  const maxDate =moment(new Date(new Date().setDate(new Date().getDate()+6))).format("YYYY-MM-DD")
-  const minDate =moment(new Date().setHours(0,0,0,0)).format("YYYY-MM-DD")
+  const maxDate = moment(
+    new Date(new Date().setDate(new Date().getDate() + 6))
+  ).format("YYYY-MM-DD");
+  const minDate = moment(new Date().setHours(0, 0, 0, 0)).format("YYYY-MM-DD");
   const handleSubmit = () => {};
-  
+
   return (
     <>
       <MDBModal show={open} setShow={setOpen} tabIndex="-1">
         <MDBModalDialog centered size="lg">
           <MDBModalContent>
-            <Form >
+            <Form>
               <MDBModalHeader>
                 <MDBModalTitle>Room Details</MDBModalTitle>
                 <MDBBtn
@@ -88,7 +92,11 @@ export default function RoomDetailsModal({
               <MDBModalBody>
                 <MDBRow style={{ padding: "5px" }}>
                   <MDBCarousel
-                    style={{ borderRadius: "10px", overflow: "hidden", maxHeight:'340px'}}
+                    style={{
+                      borderRadius: "10px",
+                      overflow: "hidden",
+                      maxHeight: "340px",
+                    }}
                     showControls
                     showIndicators
                     className="p-0"
@@ -96,10 +104,12 @@ export default function RoomDetailsModal({
                     <MDBCarouselItem
                       className="w-100 d-block"
                       itemId={1}
-                      src={room.room_image.url??"https://mdbootstrap.com/img/new/slides/041.jpg"}
+                      src={
+                        room.room_image.url ??
+                        "https://mdbootstrap.com/img/new/slides/041.jpg"
+                      }
                       alt="..."
                     />
-                   
                   </MDBCarousel>
                 </MDBRow>
                 <MDBContainer>
@@ -113,7 +123,7 @@ export default function RoomDetailsModal({
                     <MDBCardText>
                       {room.capacity === 1
                         ? "Single"
-                        : "Sharing:" +room.capacity + " shared"}
+                        : "Sharing:" + room.capacity + " shared"}
                     </MDBCardText>
                   </MDBRow>
                   <MDBRow className="mt-2">
@@ -138,19 +148,19 @@ export default function RoomDetailsModal({
                     </MDBCardText>
                   </MDBRow>
                   <MDBRow className="">
-                      <input
+                    <input
                       min={minDate}
                       max={maxDate}
                       // max={moment(new Date(new Date().setDate(new Date().getDate()+6))).format('YYYY-MM-DD')}
-                        type="date"
-                        onChange={handleDateChange}
-                        value={formatDateToDefault(date)}
-                        // value={moment(date).format('YYYY-MM-DD')}
-                        style={{width:"200px"}}
-                        className="form-control"
-                        id="exampleDatepicker1"
-                        data-mdb-toggle="datepicker"
-                      />
+                      type="date"
+                      onChange={handleDateChange}
+                      value={formatDateToDefault(date)}
+                      // value={moment(date).format('YYYY-MM-DD')}
+                      style={{ width: "200px" }}
+                      className="form-control"
+                      id="exampleDatepicker1"
+                      data-mdb-toggle="datepicker"
+                    />
                   </MDBRow>
                 </MDBContainer>
               </MDBModalBody>

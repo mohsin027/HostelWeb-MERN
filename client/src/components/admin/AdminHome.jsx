@@ -48,10 +48,10 @@ export default function AdminHome() {
     const monthWiseTotal = {};
 
     for (const booking of bookings) {
-      const month = new Date(booking.createdAt).getMonth(); // Get the month (0-11)
-      // const year = new Date(booking.createdAt).getFullYear(); // Get the year
+      const month = new Date(booking.createdAt).getMonth(); 
+      // const year = new Date(booking.createdAt).getFullYear(); 
 
-      const monthYearKey = month; // Format: "YYYY-MM"
+      const monthYearKey = month; 
 
       if (monthWiseTotal[monthYearKey]) {
         monthWiseTotal[monthYearKey] += booking.amount;
@@ -67,8 +67,7 @@ export default function AdminHome() {
     return monthlyData;
   };
 
-  // console.log(calculateMonthWiseTotal());
-  // console.log('total capacity',capacity);
+
 
   return (
     <>

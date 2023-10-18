@@ -18,7 +18,6 @@ export const getAllHostels=  async (req, res) => {
     
     const hostelList = await HostelModel.find({isApproved: "Approved",isBlocked:false}).populate("rooms");
     res.status(201).json({success:true,hostelList});
-    console.log(hostelList,'userside hostel listing')
   } catch (error) {
     console.error('Error getting hostel:', error);
     res.status(500).json({ error: 'Failed to get hostel' });
@@ -28,12 +27,10 @@ export const getHostel = async (req, res) => {
   try {
     const { limit, skip } = req.query;
     const sharing = req.query.sharing ?? null
-    console.log(sharing)
     const gender = req.query.gender ? req.query.gender : new RegExp("");
     const location = req.query.location ? new RegExp(req.query.location, 'i') : new RegExp("");
     const locations = await HostelModel.find({},{location:1, _id:0}).lean()
 
-    console.log(limit, skip);
     let count;
     if(sharing){
       count = await HostelModel.find({isApproved: "Approved",isBlocked:false, hostelType:gender, location, roomShares:sharing}).count();
@@ -67,10 +64,8 @@ export const getHostel = async (req, res) => {
 
 export const bookRoom=  async (req, res) => {
   try {
-    console.log(req.body)
     // const booking = await roomBookingModel({});
     res.status(201).json({success:true});
-    console.log('userside room booking')
   } catch (error) {
     console.error('Error booking room:', error);
     res.status(500).json({ error: 'Failed to book room' });
@@ -79,14 +74,12 @@ export const bookRoom=  async (req, res) => {
 export const editUserProfile=  async (req, res) => {
   try {
     const {id, fullName, address,  contactNumber, gender} = req.body
-    console.log(id)
     const editUser = await UserModel.findByIdAndUpdate(id, {
       $set:{
         fullName, address,  contactNumber, gender
       }
     })
     res.status(201).json({success:true,editUser, err:false});
-    console.log('profile updated successfully')
   } catch (error) {
     console.error('Error updating:', error);
     res.status(500).json({ err:true, error: 'Failed to update profile' });
@@ -98,14 +91,12 @@ export const editUserProfileImage=  async (req, res) => {
     const image=await cloudinary.uploader.upload(req.body.image,{
       folder:'hostelweb'
     })
-    console.log('image',req.body)
     const editUser = await UserModel.findByIdAndUpdate(id, {
       $set:{
         image:image
       }
     })
     res.status(201).json({success:true,editUser, err:false});
-    console.log('profile updated successfully')
   } catch (error) {
     console.error('Error updating:', error);
     res.status(500).json({ err:true, error: 'Failed to update profile' });
@@ -115,9 +106,7 @@ export const getRoomsByHostel=  async (req, res) => {
   try {
     const {hostelId} = req.params;
     const hostel = await HostelModel.findOne({_id:hostelId}).populate('rooms').lean()
-    console.log('response in controler hosteldetails',hostel)
     res.status(201).json({success:true,hostel,err:false});
-    console.log('profile updated successfully')
   } catch (error) {
     console.error('Error updating:', error);
     res.status(500).json({ err:true, error: 'Failed to update profile' });
@@ -143,7 +132,6 @@ if (limit) {
 //
 
 res.status(201).json({ bookings, count, limit, skip });
-    console.log('profile booking fetch successfully')
   } catch (error) {
     console.error('Error updating:', error);
     res.status(500).json({ err:true, error: 'Failed to get profile' });
@@ -152,7 +140,6 @@ res.status(201).json({ bookings, count, limit, skip });
 export const cancelBooking=  async (req, res) => {
   try {
     const {bookingId} = req.params;
-    console.log(bookingId);
     const booking = await roomBookingModel.findById(bookingId).populate('hostelId')
     if(booking.status==="cancelled"){
       return res.json({err:true, message:"Booking already cancelled"});
@@ -175,8 +162,6 @@ export const cancelBooking=  async (req, res) => {
     booking.status="cancelled";
     await booking.save();
     await RoomModel.findByIdAndUpdate(booking.roomId,{$inc:{occupants:-1}})
-
-    console.log('profile booking cancel successfully')
     res.status(201).json({success:true ,err:false});
   } catch (error) {
     console.error('Error updating:', error);
@@ -187,7 +172,6 @@ export const cancelBooking=  async (req, res) => {
 export const addComplaint=async (req,res)=> {
  try {
   const complaint = await ComplaintModel.create(req.body)
-  console.log('vhvcbbjbj',req.body);
   res.status(201).json({success:true ,err:false,complaint});
  } catch (error) {
   console.error('Error registering complaint:', error);

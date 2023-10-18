@@ -23,13 +23,11 @@ const HostelRoutes = () => {
     try {
       const { data } = await axios.get("/hostel/auth/login/check");
       dispatch({ type: "SET-HOSTEL", payload: data });
-      console.log(data, "HRCUL");
     } catch (e) {
       console.log("error", e);
       dispatch({ type: "SET-HOSTEL", payload: { loggedIn: false } });
     }
   };
-  console.log(hostel, "hostel admin auth");
   return (
     <>
       <Routes>
@@ -37,7 +35,6 @@ const HostelRoutes = () => {
           <>
             <Route path="/login" element={<Navigate to="/hostel" />} />
             <Route path="/register" element={<Navigate to="/hostel" />} />
-
             <Route path="/hostel/:hostelId" element={<RoomHomePage />} />
             <Route path="/hostels" element={<HosteTablePage />} />
             <Route path="/bookings" element={<RoomBookingPage />} />

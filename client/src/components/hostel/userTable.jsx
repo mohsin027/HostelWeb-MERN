@@ -15,7 +15,6 @@ function UserTable() {
     
               setUser(userdata);
             }
-            console.log("response:", userdata); 
           } catch (error) {
             console.error("Error fetching data:", error);
           }

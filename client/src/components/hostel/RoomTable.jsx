@@ -18,12 +18,11 @@ function RoomTable({ hostelId }) {
   const { searchQuery } = useSelector((state) => state.common);
   const { hostel } = useSelector((state) => state.auth.hostel);
   const [roomData, setRoomData] = useState([]);
-  const [blockStat, setBlockStat] = useState('');
+  const [blockStat, setBlockStat] = useState("");
   const checkHostel = async () => {
     try {
       const response = await axios.get("/hostel/hostel/rooms/" + hostelId);
       const { rooms } = response.data;
-      console.log(rooms, "room in roomtable component");
       setRoomData(rooms);
     } catch (error) {
       console.log(error, "room chweck error");
@@ -34,25 +33,25 @@ function RoomTable({ hostelId }) {
     checkHostel();
   }, [blockStat]);
 
-  const handleBlockStatus =async (id,stat) => {
+  const handleBlockStatus = async (id, stat) => {
     try {
-      const blockStatus=await axios.post("/hostel/hostel/blockStatus/",{id,stat});
-      console.log(blockStatus,'blockStatus');
-      setBlockStat(blockStatus)
+      const blockStatus = await axios.post("/hostel/hostel/blockStatus/", {
+        id,
+        stat,
+      });
+      setBlockStat(blockStatus);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <MDBContainer className="pt-3">
-      <div className='d-flex justify-content-between'>
-
-      <h4 className="mt-2 mb-3 ms-1">Rooms </h4>
-      <div>
-        
-      <Button onClick={() => setOpen(true)}>Add Room</Button>
-      </div>
+      <div className="d-flex justify-content-between">
+        <h4 className="mt-2 mb-3 ms-1">Rooms </h4>
+        <div>
+          <Button onClick={() => setOpen(true)}>Add Room</Button>
+        </div>
       </div>
       <div className="d-flex justify-content-end mb-2">
         {/* <MDBBtn onClick={() => setOpen(true)}>Add Hostel</MDBBtn> */}
@@ -116,27 +115,33 @@ function RoomTable({ hostelId }) {
                   </td>
                   <td>{room.occupants}</td>
                   <td>{room.room_rent}</td>
-                   <td>
+                  <td>
                     <MDBBadge
-                      color={
-                        room?.block===true
-                          ? "warning"
-                          : "success"
-                      }
+                      color={room?.block === true ? "warning" : "success"}
                       pill
                     >
-                      {room?.block?'blocked':'active'}
+                      {room?.block ? "blocked" : "active"}
                     </MDBBadge>
-                  </td> 
-                 <td className="">
+                  </td>
+                  <td className="">
                     {room?.block === true ? (
-                      <MDBBtn onClick={()=>handleBlockStatus(room._id,false)} color="success">Un Block</MDBBtn>
+                      <MDBBtn
+                        onClick={() => handleBlockStatus(room._id, false)}
+                        color="success"
+                      >
+                        Un Block
+                      </MDBBtn>
                     ) : (
-                      <MDBBtn onClick={()=>handleBlockStatus(room._id,true)} color="warning">Block</MDBBtn>
+                      <MDBBtn
+                        onClick={() => handleBlockStatus(room._id, true)}
+                        color="warning"
+                      >
+                        Block
+                      </MDBBtn>
                     )}
-                    </td>
-                   
-                    {/* <MDBDropdown>
+                  </td>
+
+                  {/* <MDBDropdown>
         <MDBDropdownToggle className='transparent-btn drop-btn'>
           <RiMore2Fill className={hostel?.isApproved!=="Pending" && "icon-disabled"}/>
         </MDBDropdownToggle>

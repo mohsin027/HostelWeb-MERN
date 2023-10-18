@@ -31,8 +31,6 @@ export default function EditUserProfileModal({ open, setOpen }) {
   });
   const dispatch = useDispatch();
 
-  console.log(user, "AHMHA");
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
@@ -53,11 +51,9 @@ export default function EditUserProfileModal({ open, setOpen }) {
   useEffect(() => {
     if (user) {
       const { fullName, address, contactNumber, _id } = user.user;
-      setData({ ...data, fullName,address, contactNumber, id: _id });
+      setData({ ...data, fullName, address, contactNumber, id: _id });
     }
   }, [user]);
-
-  console.log(data);
 
   // const isNotValidForm = () => {
   //   if (
@@ -80,14 +76,12 @@ export default function EditUserProfileModal({ open, setOpen }) {
         "/user/editUserProfile",
         data
       );
-      console.log(responseData);
       if (responseData.err) {
         setError(responseData.message);
         return;
       }
       setOpen(false);
       dispatch({ type: "REFRESH-USER" });
-      console.log("succesfully edited");
       setData({
         fullName: "",
         contactNumber: "",
@@ -130,7 +124,7 @@ export default function EditUserProfileModal({ open, setOpen }) {
                   name="fullName"
                   size="lg"
                 />
-              
+
                 <MDBInput
                   wrapperClass="mb-4"
                   label="Contact no"
@@ -152,7 +146,6 @@ export default function EditUserProfileModal({ open, setOpen }) {
                   name="address"
                 />
 
-             
                 {error && (
                   <div className="d-flex justify-content-between mt-3 mb-4">
                     <p className="text-danger">{error}</p>

@@ -45,7 +45,6 @@ function HostelLogin() {
         email,
         password,
       });
-      console.log(data);
       if (data.err) {
         setError(data.message);
         setIsLoading(false);
@@ -112,7 +111,8 @@ function HostelLogin() {
               ></ClipLoader>
             </MDBBtn>
             <div className="w-100 text-center">
-              Don't Have an account ? <Link to="/hostel/register">Register</Link>
+              Don't Have an account ?{" "}
+              <Link to="/hostel/register">Register</Link>
             </div>
 
             {/* <div className="divider d-flex align-items-center my-4">

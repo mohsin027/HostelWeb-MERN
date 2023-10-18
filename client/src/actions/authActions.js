@@ -8,7 +8,6 @@ export const login = (token) => {
   };
   
   export const logout = () => {
-    console.log('lllo');
     return {
       type: 'LOGOUT',
     };

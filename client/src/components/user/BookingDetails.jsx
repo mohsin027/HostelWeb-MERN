@@ -44,7 +44,6 @@ export default function BookingDetails() {
       if (count) {
         setCount(Math.ceil(count / limit));
       }
-    
     } catch (error) {
       console.log(error);
     }
@@ -56,10 +55,8 @@ export default function BookingDetails() {
     if (!isConfirmed) return;
     setIsLoading(true);
     try {
-      console.log("date in profile comp", curDate, id);
       const response = await axios.get("/user/booking/cancel/" + id);
       const cancelledBooking = await response.data.cancelledBooking;
-      console.log("success", cancelledBooking);
       setIsLoading(false);
       setRefresh(!refresh);
       toast.success("Succefully cancelled");
@@ -74,17 +71,11 @@ export default function BookingDetails() {
 
   const handlePageChange = async (event, value) => {
     setPage(value);
-
     setSkip(page * limit);
-
-    console.log("skip", skip);
     setRefresh(!refresh);
   };
-  console.log("value", "page", page);
   const handleItemsPerPage = async (e) => {
     setLimit(e.target.value);
-
-    console.log(e.target.value);
     setRefresh(!refresh);
   };
 
@@ -97,46 +88,45 @@ export default function BookingDetails() {
               <MDBCardHeader>
                 <h4>Booking Details</h4>
               </MDBCardHeader>
-              <MDBCardBody>
-                <MDBCardText>
-                  <MDBTable>
-                    <MDBTableHead>
-                      <tr>
-                        <th>
-                          <h6>Hostel Name</h6>
-                        </th>
-                        <th>
-                          <h6>Room Name</h6>
-                        </th>
-                        <th>
-                          <h6>Amount</h6>
-                        </th>
-                        <th>
-                          <h6>Check In</h6>
-                        </th>
-                        <th>
-                          <h6>Valid Till</h6>
-                        </th>
-                        <th>
-                          <h6>Action</h6>
-                        </th>
-                      </tr>
-                    </MDBTableHead>
-                    <MDBTableBody>
-                      {bookingData.map((item) => (
-                        <tr key={item._id}>
-                          <td>{item.hostelId.hostelName}</td>
-                          <td>{item.roomId.title}</td>
-                          <td>{item.amount}</td>
-                          <td>{moment(item.checkIn).format("DD-MM-YYYY")}</td>
-                          <td>
-                            <span className="fw-normal mb-1">
-                              {moment(item.expiry)
-                                // .add(1, "M")
-                                .format("DD-MM-YYYY")}
-                            </span>
-                          </td>
-                          {/* <td>
+              <MDBCardBody className="table-responsive">
+                <MDBTable style={{ overflowX: "auto" }}>
+                  <MDBTableHead>
+                    <tr>
+                      <th>
+                        <h6>Hostel Name</h6>
+                      </th>
+                      <th>
+                        <h6>Room Name</h6>
+                      </th>
+                      <th>
+                        <h6>Amount</h6>
+                      </th>
+                      <th>
+                        <h6>Check In</h6>
+                      </th>
+                      <th>
+                        <h6>Valid Till</h6>
+                      </th>
+                      <th>
+                        <h6>Action</h6>
+                      </th>
+                    </tr>
+                  </MDBTableHead>
+                  <MDBTableBody>
+                    {bookingData.map((item) => (
+                      <tr key={item._id}>
+                        <td>{item.hostelId.hostelName}</td>
+                        <td>{item.roomId.title}</td>
+                        <td>{item.amount}</td>
+                        <td>{moment(item.checkIn).format("DD-MM-YYYY")}</td>
+                        <td>
+                          <span className="fw-normal mb-1">
+                            {moment(item.expiry)
+                              // .add(1, "M")
+                              .format("DD-MM-YYYY")}
+                          </span>
+                        </td>
+                        {/* <td>
                             {moment(curDate).format('YYYY-MM-DD')<moment(item.checkIn).format('YYYY-MM-DD') ? 
                            'cancel'
                            :
@@ -146,60 +136,61 @@ export default function BookingDetails() {
                             : "no equal"
                            }
                           </td> */}
-                          <td>
-                            {moment(curDate).format('YYYY-MM-DD')<moment(item.checkIn).format('YYYY-MM-DD') ? 
-                              <MDBBtn
-                                disabled={
-                                  isLoading === true
-                                }
-                                onClick={() => handleCancel(item._id)}
-                              >
-                                <ClipLoader
-                                  loading={isLoading}
-                                  color="white"
-                                  size={15}
-                                ></ClipLoader>
-                                Cancel
-                              </MDBBtn>
-                             : item.status === "cancelled" ? 
-                              <span>cancelled</span>
-                             ? item.status : "expired"
-                            : 
-                              "active"
-                            }
-                          </td>
-                          {/* <td>{user?.hostelData?.hostelId.hostelName}</td>
+                        <td>
+                          {moment(curDate).format("YYYY-MM-DD") <
+                          moment(item.checkIn).format("YYYY-MM-DD") ? (
+                            <MDBBtn
+                              disabled={isLoading === true}
+                              onClick={() => handleCancel(item._id)}
+                            >
+                              <ClipLoader
+                                loading={isLoading}
+                                color="white"
+                                size={15}
+                              ></ClipLoader>
+                              Cancel
+                            </MDBBtn>
+                          ) : item.status === "cancelled" ? (
+                            <span>cancelled</span> ? (
+                              item.status
+                            ) : (
+                              "expired"
+                            )
+                          ) : (
+                            "active"
+                          )}
+                        </td>
+                        {/* <td>{user?.hostelData?.hostelId.hostelName}</td>
                         <td>{user?.hostelData?.roomId.title}</td>
                         <td>{user?.hostelData?.roomId.room_rent}</td>
                       <td>{user?.hostelData?.roomId.createdAt}</td> */}
-                        </tr>
-                      ))}
+                      </tr>
+                    ))}
 
-                      <MDBTabsItem></MDBTabsItem>
-                    </MDBTableBody>
-                  </MDBTable>
-                  <div className="d-flex justify-content-between">
-                    <Pagination
-                      count={count}
-                      page={page}
-                      onChange={handlePageChange}
-                    />
-                    <div className="d-flex w-10 align-items-center">
-                      <span className="m-2">view</span>
-                      <select
-                        name="limit"
-                        className=""
-                        id=""
-                        onChange={handleItemsPerPage}
-                      >
-                        <option value={5}>5</option>
-                        <option value={25}>25</option>
-                        <option value={50}>50</option>
-                      </select>
-                      <span className="m-2">items</span>
-                    </div>
+                    <MDBTabsItem></MDBTabsItem>
+                  </MDBTableBody>
+                </MDBTable>
+                <div className="d-flex justify-content-between">
+                  <Pagination
+                    count={count}
+                    page={page}
+                    onChange={handlePageChange}
+                  />
+                  <div className="d-flex w-10 align-items-center">
+                    <span className="m-2">view</span>
+                    <select
+                      name="limit"
+                      className=""
+                      id=""
+                      onChange={handleItemsPerPage}
+                    >
+                      <option value={5}>5</option>
+                      <option value={25}>25</option>
+                      <option value={50}>50</option>
+                    </select>
+                    <span className="m-2">items</span>
                   </div>
-                </MDBCardText>
+                </div>
               </MDBCardBody>
             </MDBCard>
           </MDBCol>

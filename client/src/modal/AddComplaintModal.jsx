@@ -15,7 +15,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-bootstrap";
-import Select from 'react-select'
+import Select from "react-select";
 
 export default function AddComplaintModal({ user, hostels, open, setOpen }) {
   //
@@ -36,20 +36,17 @@ export default function AddComplaintModal({ user, hostels, open, setOpen }) {
     return { label: hostel.hostelName, value: hostel._id };
   });
 
-  const titleSelectionArray=[
-    { label: "Maintenance", value:'Maintenance'},
-    { label: "Security", value:'Security'},
-    { label: "Cleanliness", value:'Cleanliness'},
-    { label: "Others", value:'Others'},
-  ]
-  console.log("hostelNameArray", hostelNameArray);
+  const titleSelectionArray = [
+    { label: "Maintenance", value: "Maintenance" },
+    { label: "Security", value: "Security" },
+    { label: "Cleanliness", value: "Cleanliness" },
+    { label: "Others", value: "Others" },
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
-
-  console.log("data", data, "user", user, "hostels", hostels);
 
   const isNotValidForm = () => {
     if (
@@ -69,13 +66,11 @@ export default function AddComplaintModal({ user, hostels, open, setOpen }) {
         ...data,
         userId: user._id,
       });
-      console.log("fffyfyfy", responseData);
       if (responseData.error) {
         setError(responseData.message);
         return;
       }
       setOpen(false);
-      console.log("succesfully added complaint");
       setData({ ...data, complaintType: "", complaintDescription: "" });
       toast.success("Successfully added complaint");
     } catch (error) {
@@ -114,17 +109,17 @@ export default function AddComplaintModal({ user, hostels, open, setOpen }) {
                   name="complaintType"
                   size="lg"
                 /> */}
-                  <div className="d-flex flex-column mb-3">
+                <div className="d-flex flex-column mb-3">
                   <span className="h6">Complaint Type</span>
                   <div className="">
-                   <Select
+                    <Select
                       placeholder="Select hostel"
                       value={data.selectedComplaintType}
                       onChange={(item) => {
                         setData({
                           ...data,
                           complaintType: item.value,
-                          selectedComplaintType:item
+                          selectedComplaintType: item,
                         });
                       }}
                       style={{
@@ -134,7 +129,7 @@ export default function AddComplaintModal({ user, hostels, open, setOpen }) {
                     />
                   </div>
                 </div>
-                 {/* <Select
+                {/* <Select
                       placeholder="Select hostel"
                       value={data.complaintType}
                       onChange={(item) => {
@@ -149,7 +144,7 @@ export default function AddComplaintModal({ user, hostels, open, setOpen }) {
                       }}
                       options={titleSelectionArray}
                     /> */}
-<span>Description</span>
+                <span>Description</span>
                 <MDBTextArea
                   wrapperClass="mb-3"
                   id="formControlLg"
@@ -166,11 +161,10 @@ export default function AddComplaintModal({ user, hostels, open, setOpen }) {
                       placeholder="Select hostel"
                       value={data.selectedHostel}
                       onChange={(item) => {
-                        console.log(item, data)
                         setData({
                           ...data,
                           hostelId: item.value,
-                          selectedHostel:item,
+                          selectedHostel: item,
                         });
                       }}
                       style={{

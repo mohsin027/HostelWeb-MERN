@@ -18,14 +18,12 @@ const AdminRoutes = () => {
   const checkAdminLoggedIn = async () => {
     try {
       const { data } = await axios.get("/admin/auth/login/check");
-      console.log(data);
       dispatch({ type: "SET-ADMIN", payload: data });
     } catch (e) {
       console.log("error", e);
       dispatch({ type: "SET-ADMIN", payload: { loggedIn: false } });
     }
   };
-  console.log(admin);
 
   return (
     <>

@@ -74,17 +74,11 @@ export default function UserTable() {
 
   const handlePageChange = async (event, value) => {
     setPage(value);
-
     setSkip(page * limit);
-
-    console.log("skip", skip);
     setRefresh(!refresh);
   };
-  console.log("value", "page", page);
   const handleItemsPerPage = async (e) => {
     setLimit(e.target.value);
-
-    console.log(e.target.value);
     setRefresh(!refresh);
   };
 

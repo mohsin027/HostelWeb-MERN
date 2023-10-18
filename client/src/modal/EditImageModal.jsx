@@ -23,45 +23,40 @@ import axios from "axios";
 import { ImageTOBase, isValidFileUploaded } from "../actions/imageToBase64";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function EditImageModal({open, setOpen} ) {
+export default function EditImageModal({ open, setOpen }) {
   const { user } = useSelector((state) => state.auth.user);
-  console.log('user', user);
   const toggleShow = () => setOpen(!open);
-  const [previewImage, setPreviewImage] = useState('')
-  const [file, setFile] = useState('')
-  const [finalImage, setFinalImage] = useState('')
-  const [error, setError] = useState(null)
-const dispatch=useDispatch()
+  const [previewImage, setPreviewImage] = useState("");
+  const [file, setFile] = useState("");
+  const [finalImage, setFinalImage] = useState("");
+  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
 
-
-  const handleChange=(e)=>{
-    if(isValidFileUploaded(e.target.files[0])){
-        setPreviewImage(URL.createObjectURL(e.target.files[0]));
-        setFile(e.target.files[0])
-        // setError("")
-        ImageTOBase(e.target.files[0], (res)=>{
-          setFinalImage(res)
-        })
-    }else{
-        setError("Invalid File type")
+  const handleChange = (e) => {
+    if (isValidFileUploaded(e.target.files[0])) {
+      setPreviewImage(URL.createObjectURL(e.target.files[0]));
+      setFile(e.target.files[0]);
+      // setError("")
+      ImageTOBase(e.target.files[0], (res) => {
+        setFinalImage(res);
+      });
+    } else {
+      setError("Invalid File type");
     }
-}
-console.log(finalImage)
+  };
 
   const handleClick = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       const { data: responseData } = await axios.patch(
         "/user/editUserProfileImage",
-        {id:user._id,image:finalImage}
+        { id: user._id, image: finalImage }
       );
-      console.log(responseData);
       if (responseData.err) {
         setError(responseData.message);
         return;
       }
       dispatch({ type: "REFRESH-USER" });
-      console.log("succesfully edited");
       // setData({
       //   hostelImage:finalImage,
       // });
@@ -89,17 +84,22 @@ console.log(finalImage)
                 ></MDBBtn>
               </MDBModalHeader>
               <MDBModalBody>
-              
                 <MDBContainer>
-                 <MDBRow>
-                    <MDBCol className="d-flex p-3 justify-content-center" md={12}>
-                        <img style={{width:"100%"}} src={previewImage} alt="" />
+                  <MDBRow>
+                    <MDBCol
+                      className="d-flex p-3 justify-content-center"
+                      md={12}
+                    >
+                      <img
+                        style={{ width: "100%" }}
+                        src={previewImage}
+                        alt=""
+                      />
                     </MDBCol>
                     <MDBCol md={12}>
-                        <MDBInput onChange={handleChange} type="file"></MDBInput>
+                      <MDBInput onChange={handleChange} type="file"></MDBInput>
                     </MDBCol>
-                 </MDBRow>
-                
+                  </MDBRow>
                 </MDBContainer>
               </MDBModalBody>
 

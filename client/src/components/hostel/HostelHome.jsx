@@ -6,13 +6,7 @@ export default function HostelHome({}) {
 
   return (
     <>
-      {/* <HostelNavbar></HostelNavbar>
-    <div className="d-flex">
-
-      <Sidebar></Sidebar>
-      </div>
-      <div>
-    </div> */}
+  
 <ApprovedHostelTable/>
     </>
   );

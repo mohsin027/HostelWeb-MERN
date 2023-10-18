@@ -5,36 +5,34 @@ import RoomModel from "../models/roomModel.js";
 import UserModel from "../models/userModel.js";
 import cron from "node-cron";
 
-
-cron.schedule('0 0 0 * * * *', async() => {
-  try{
+cron.schedule("0 0 0 * * * *", async () => {
+  try {
     const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1);
-  console.log(today, tomorrow)
-  const updated = await roomBookingModel.updateMany({
-    expiry: {
-      $gte: today,
-      $lt: tomorrow,
-    },
-    status:'active'
-  },{
-    $set:{
-      status:"expired"
-    }
-  })
-  console.log(updated.modifiedCount + " expired")
-  }catch(err){
-    console.log(err)
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const updated = await roomBookingModel.updateMany(
+      {
+        expiry: {
+          $gte: today,
+          $lt: tomorrow,
+        },
+        status: "active",
+      },
+      {
+        $set: {
+          status: "expired",
+        },
+      }
+    );
+  } catch (err) {
+    console.log(err);
   }
 });
-
 
 export const getAllHostel = async (req, res) => {
   try {
     const { limit, skip } = req.query;
-    console.log(limit, skip);
     const count = await HostelModel.find().count();
     let hostelList = [];
     if (limit) {
@@ -68,7 +66,7 @@ export const getAllUser = async (req, res) => {
         .skip(skip ?? 0)
         .sort({ _id: -1 });
     }
-    res.status(201).json({userList, count, skip, limit});
+    res.status(201).json({ userList, count, skip, limit });
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).json({ error: "Failed to fetch users" });
@@ -88,7 +86,6 @@ export const changeHostelStatus = async (req, res) => {
     const hostel = await HostelModel.findByIdAndUpdate(id, {
       $set: { isApproved: stat },
     });
-    console.log(hostel, "status2");
     res.status(201).json({ err: false, hostel });
   } catch (error) {
     console.error("Error creating hostel:", error);
@@ -98,7 +95,6 @@ export const changeHostelStatus = async (req, res) => {
 export const changeHostelListing = async (req, res) => {
   try {
     const { listing, id } = req.body;
-    console.log(req.body, "hostel listing controller");
     if (!listing)
       return res
         .status(201)
@@ -110,7 +106,6 @@ export const changeHostelListing = async (req, res) => {
     const hostel = await HostelModel.findByIdAndUpdate(id, {
       $set: { isBlocked: listing },
     });
-    console.log(hostel, "status2");
     res.status(201).json({ err: false, hostel });
   } catch (error) {
     console.error("Error creating hostel:", error);
@@ -132,7 +127,6 @@ export const changeUserStatus = async (req, res) => {
     const user = await UserModel.findByIdAndUpdate(id, {
       $set: { isBlocked: stat },
     });
-    console.log(user, "status2");
     res.status(201).json({ err: false, user });
   } catch (error) {
     console.error("Error creating hostel:", error);
@@ -140,46 +134,53 @@ export const changeUserStatus = async (req, res) => {
   }
 };
 
-
-export const dashboardData= async (req,res)=>{
- try {
-  const hostelCount = await HostelModel.find().count()
-  const userCount = await UserModel.find().count()
-  const bookings = await roomBookingModel.find()
-  const today = new Date();
-  //
-
-
-const activeBookings = bookings.filter((booking) => {
-  const checkInDate = booking.checkIn;
-  const checkOutDate = new Date(checkInDate);
-  checkOutDate.setDate(checkOutDate.getDate() + 30);
-
-  return today >= checkInDate && today <= checkOutDate;
-});
-const activeBookingsCount = activeBookings.length;
-
-  const bookingCount = bookings.length
-  // console.log("bookingCount",activeBookings);
-  res.status(201).json({ err: false, message:'success',hostelCount,userCount,bookingCount,activeBookingsCount });
- } catch (error) {
-  console.log(error);
-  res.status(500).json({ err: true, error: "Failed to fetch data" });
- }
-}
-
-export const getComplaints=async (req,res)=> {
+export const dashboardData = async (req, res) => {
   try {
+    const hostelCount = await HostelModel.find().count();
+    const userCount = await UserModel.find().count();
+    const bookings = await roomBookingModel.find();
+    const today = new Date();
+    //
 
-   const complaints = await ComplaintModel.find().sort({createdAt:-1}).populate('hostelId userId')
-   res.status(201).json({success:true ,err:false,complaints});
+    const activeBookings = bookings.filter((booking) => {
+      const checkInDate = booking.checkIn;
+      const checkOutDate = new Date(checkInDate);
+      checkOutDate.setDate(checkOutDate.getDate() + 30);
+
+      return today >= checkInDate && today <= checkOutDate;
+    });
+    const activeBookingsCount = activeBookings.length;
+
+    const bookingCount = bookings.length;
+    res
+      .status(201)
+      .json({
+        err: false,
+        message: "success",
+        hostelCount,
+        userCount,
+        bookingCount,
+        activeBookingsCount,
+      });
   } catch (error) {
-   console.error('Error registering complaint:', error);
-     res.status(500).json({ err:true, error: 'Failed to fetch complaint' });
-  } 
- }
+    console.log(error);
+    res.status(500).json({ err: true, error: "Failed to fetch data" });
+  }
+};
 
- export const changeComplaintStatus = async (req, res) => {
+export const getComplaints = async (req, res) => {
+  try {
+    const complaints = await ComplaintModel.find()
+      .sort({ createdAt: -1 })
+      .populate("hostelId userId");
+    res.status(201).json({ success: true, err: false, complaints });
+  } catch (error) {
+    console.error("Error registering complaint:", error);
+    res.status(500).json({ err: true, error: "Failed to fetch complaint" });
+  }
+};
+
+export const changeComplaintStatus = async (req, res) => {
   try {
     const { stat, id } = req.body;
     if (!stat)
@@ -193,7 +194,6 @@ export const getComplaints=async (req,res)=> {
     const complaint = await ComplaintModel.findByIdAndUpdate(id, {
       $set: { status: stat },
     });
-    console.log(complaint, "status2");
     res.status(201).json({ error: false, complaint });
   } catch (error) {
     console.error("Error creating hostel:", error);
@@ -201,33 +201,42 @@ export const getComplaints=async (req,res)=> {
   }
 };
 
-export const getBarChartData= async (req,res)=>{
+export const getBarChartData = async (req, res) => {
   try {
-   const hostels = await HostelModel.find().populate('rooms')
-   const users = await UserModel.find()
-   const bookings = await roomBookingModel.find()
-   const roomCapacity=await RoomModel.aggregate([
-    {
-       $group: {
-         _id: null, // Group all documents into a single group
-         totalCapacity: { $sum: "$capacity" } // Sum the capacity of all rooms
-       }
-     }
-   ])
-   const roomOccupancy=await RoomModel.aggregate([
-    {
-       $group: {
-         _id: null, // Group all documents into a single group
-         totalOccupants: { $sum: "$occupants" } // Sum the capacity of all rooms
-       }
-     }
-   ])
-   //
-   console.log('capacity', roomCapacity);
- 
-   res.status(201).json({ err: false, message:'success',hostels,users,bookings,roomCapacity,roomOccupancy });
+    const hostels = await HostelModel.find().populate("rooms");
+    const users = await UserModel.find();
+    const bookings = await roomBookingModel.find();
+    const roomCapacity = await RoomModel.aggregate([
+      {
+        $group: {
+          _id: null, // Group all documents into a single group
+          totalCapacity: { $sum: "$capacity" }, // Sum the capacity of all rooms
+        },
+      },
+    ]);
+    const roomOccupancy = await RoomModel.aggregate([
+      {
+        $group: {
+          _id: null, // Group all documents into a single group
+          totalOccupants: { $sum: "$occupants" }, // Sum the capacity of all rooms
+        },
+      },
+    ]);
+    //
+
+    res
+      .status(201)
+      .json({
+        err: false,
+        message: "success",
+        hostels,
+        users,
+        bookings,
+        roomCapacity,
+        roomOccupancy,
+      });
   } catch (error) {
-   console.log(error);
-   res.status(500).json({ err: true, error: "Failed to fetch data" });
+    console.log(error);
+    res.status(500).json({ err: true, error: "Failed to fetch data" });
   }
- }
+};

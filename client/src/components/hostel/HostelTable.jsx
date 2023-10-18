@@ -56,7 +56,7 @@ function HostelTable(props) {
 
   useEffect(() => {
     checkHostel();
-  }, [openEdit, refresh, page, limit,filter,open]);
+  }, [openEdit, refresh, page, limit, filter, open]);
 
   const handleListing = async (listing, id, index) => {
     const { isConfirmed } = await mySwal.confirm("Are You sure ");
@@ -82,7 +82,7 @@ function HostelTable(props) {
   };
   const filteredHostelData = hostelData.filter((hostel) => {
     if (filter === "all") {
-      return true; 
+      return true;
     } else if (filter === "approved") {
       return hostel.isApproved === "Approved";
     } else if (filter === "rejected") {
@@ -97,17 +97,11 @@ function HostelTable(props) {
 
   const handlePageChange = async (event, value) => {
     setPage(value);
-
     setSkip(page * limit);
-
-    console.log("skip", skip);
     setRefresh(!refresh);
   };
-  console.log("value", "page", page);
   const handleItemsPerPage = async (e) => {
     setLimit(e.target.value);
-
-    console.log(e.target.value);
     setRefresh(!refresh);
   };
 
@@ -118,38 +112,38 @@ function HostelTable(props) {
         <MDBBtn onClick={() => setOpen(true)}>Add Hostel</MDBBtn>
       </div>
       <div>
-          <span className="me-2">Filter by:</span>
-          <MDBBtn
-            color={filter === "all" ? "primary" : "light"}
-            onClick={() => setFilter("all")}
-          >
-            All
-          </MDBBtn>
-          <MDBBtn
-            color={filter === "listed" ? "primary" : "light"}
-            onClick={() => setFilter("listed")}
-          >
-            Listed
-          </MDBBtn>
-          <MDBBtn
-            color={filter === "unlisted" ? "primary" : "light"}
-            onClick={() => setFilter("unlisted")}
-          >
-            Unlisted
-          </MDBBtn>
-          <MDBBtn
-            color={filter === "approved" ? "primary" : "light"}
-            onClick={() => setFilter("approved")}
-          >
-            Approved
-          </MDBBtn>
-          <MDBBtn
-            color={filter === "rejected" ? "primary" : "light"}
-            onClick={() => setFilter("rejected")}
-          >
-            Rejected
-          </MDBBtn>
-        </div>
+        <span className="me-2">Filter by:</span>
+        <MDBBtn
+          color={filter === "all" ? "primary" : "light"}
+          onClick={() => setFilter("all")}
+        >
+          All
+        </MDBBtn>
+        <MDBBtn
+          color={filter === "listed" ? "primary" : "light"}
+          onClick={() => setFilter("listed")}
+        >
+          Listed
+        </MDBBtn>
+        <MDBBtn
+          color={filter === "unlisted" ? "primary" : "light"}
+          onClick={() => setFilter("unlisted")}
+        >
+          Unlisted
+        </MDBBtn>
+        <MDBBtn
+          color={filter === "approved" ? "primary" : "light"}
+          onClick={() => setFilter("approved")}
+        >
+          Approved
+        </MDBBtn>
+        <MDBBtn
+          color={filter === "rejected" ? "primary" : "light"}
+          onClick={() => setFilter("rejected")}
+        >
+          Rejected
+        </MDBBtn>
+      </div>
       <div className="table-responsive rounded">
         <MDBTable align="middle" striped>
           <MDBTableHead className="" style={{ backgroundColor: "#E7E7E7" }}>
@@ -243,7 +237,8 @@ function HostelTable(props) {
                   </td>
                   <td>
                     <div className="d-flex">
-                      <FiEdit3 className="mt-2"
+                      <FiEdit3
+                        className="mt-2"
                         type="button"
                         onClick={() => {
                           setOpenEdit(true);
@@ -253,57 +248,55 @@ function HostelTable(props) {
 
                       <MDBDropdown>
                         <MDBDropdownToggle className="transparent-btn drop-btn">
-                          <RiMore2Fill className='' />
+                          <RiMore2Fill className="" />
                         </MDBDropdownToggle>
 
                         {
-                        // hostel?.isApproved === "Pending" ? (
-                        //   <MDBDropdownMenu>
-                        //     <MDBDropdownItem
-                        //       link
-                        //       onClick={() =>
-                        //         handleStatus("Approved", hostel._id, index)
-                        //       }
-                        //     >
-                        //       Approve
-                        //     </MDBDropdownItem>
-                        //     <MDBDropdownItem
-                        //       link
-                        //       onClick={() =>
-                        //         handleStatus("Rejected", hostel._id, index)
-                        //       }
-                        //     >
-                        //       Reject
-                        //     </MDBDropdownItem>
-                        //   </MDBDropdownMenu>
-                        // ) 
-                        // :
-                        hostel.isApproved==="Approved" &&
-                        (                        
-                        hostel.isBlocked === false ? (
-                          <MDBDropdownMenu>
-                            <MDBDropdownItem
-                              link
-                              onClick={() =>
-                                handleListing("true", hostel._id, index)
-                              }
-                            >
-                              UnList
-                            </MDBDropdownItem>
-                          </MDBDropdownMenu>
-                        ) : (
-                          <MDBDropdownMenu>
-                            <MDBDropdownItem
-                              link
-                              onClick={() =>
-                                handleListing("false", hostel._id, index)
-                              }
-                            >
-                              List
-                            </MDBDropdownItem>
-                          </MDBDropdownMenu>
-                        )
-                        )
+                          // hostel?.isApproved === "Pending" ? (
+                          //   <MDBDropdownMenu>
+                          //     <MDBDropdownItem
+                          //       link
+                          //       onClick={() =>
+                          //         handleStatus("Approved", hostel._id, index)
+                          //       }
+                          //     >
+                          //       Approve
+                          //     </MDBDropdownItem>
+                          //     <MDBDropdownItem
+                          //       link
+                          //       onClick={() =>
+                          //         handleStatus("Rejected", hostel._id, index)
+                          //       }
+                          //     >
+                          //       Reject
+                          //     </MDBDropdownItem>
+                          //   </MDBDropdownMenu>
+                          // )
+                          // :
+                          hostel.isApproved === "Approved" &&
+                            (hostel.isBlocked === false ? (
+                              <MDBDropdownMenu>
+                                <MDBDropdownItem
+                                  link
+                                  onClick={() =>
+                                    handleListing("true", hostel._id, index)
+                                  }
+                                >
+                                  UnList
+                                </MDBDropdownItem>
+                              </MDBDropdownMenu>
+                            ) : (
+                              <MDBDropdownMenu>
+                                <MDBDropdownItem
+                                  link
+                                  onClick={() =>
+                                    handleListing("false", hostel._id, index)
+                                  }
+                                >
+                                  List
+                                </MDBDropdownItem>
+                              </MDBDropdownMenu>
+                            ))
                         }
                       </MDBDropdown>
                     </div>

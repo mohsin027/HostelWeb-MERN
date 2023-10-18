@@ -26,11 +26,7 @@ import moment from "moment";
 export default function ProfilePage() {
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
-  console.log(editOpen,'editOpen')
   const { user } = useSelector((state) => state.auth.user);
-  console.log(user, "user in profile");
-
-  
 
   return (
     <section style={{ backgroundColor: "#eee" }}>
@@ -55,7 +51,10 @@ export default function ProfilePage() {
               <MDBCardBody className="text-center">
                 <div className="w-100 d-flex justify-content-center">
                   <MDBCardImage
-                    src={user.image?.url ?? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"}
+                    src={
+                      user.image?.url ??
+                      "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                    }
                     alt="avatar"
                     className="rounded-circle"
                     style={{ width: "150px" }}
@@ -65,7 +64,7 @@ export default function ProfilePage() {
                     type="button"
                     size="35"
                     onClick={() => setEditOpen(true)}
-                    style={{position: "absolute",marginRight:'-120px'}}
+                    style={{ position: "absolute", marginRight: "-120px" }}
                   ></RiImageEditFill>
                 </div>
                 <p className="text-muted mb-1 mt-1">
@@ -77,8 +76,6 @@ export default function ProfilePage() {
                 </div>
               </MDBCardBody>
             </MDBCard>
-
-         
           </MDBCol>
           <MDBCol lg="8">
             <MDBCard className="mb-4">

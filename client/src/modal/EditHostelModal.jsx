@@ -24,7 +24,6 @@ export default function EditHostelModal({
   setOpenEdit: setOpen,
 }) {
   //
-  console.log(hostelData, "hello");
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [image, setImage] = useState(null);
@@ -41,7 +40,7 @@ export default function EditHostelModal({
   const { hostel } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    setData({...hostelData, hostelImage:null});
+    setData({ ...hostelData, hostelImage: null });
   }, [hostelData]);
 
   const handleChange = (e) => {
@@ -50,19 +49,16 @@ export default function EditHostelModal({
   };
   const handleImageChange = (e) => {
     if (isValidFileUploaded(e.target.files[0])) {
-      console.log(e.target.files[0]);
       setImage(e.target.files[0]);
       setError("");
       ImageTOBase(e.target.files[0], (res) => {
         setData({ ...data, hostelImage: res });
-        console.log(res);
       });
     } else {
       setError("Invalid File type");
     }
   };
 
-  console.log(data, "data edit modal");
   const isNotValidForm = () => {
     if (!data) {
       return true;
@@ -89,14 +85,11 @@ export default function EditHostelModal({
           ...data,
         }
       );
-      console.log('hostel update in hostel',responseData);
       if (responseData.err) {
         setError(responseData.message);
         return;
       }
       setOpen(false);
-      console.log("succesfully updated hostel");
-
       toast.success("successfully updated hostel");
     } catch (error) {
       setIsLoading(false);
@@ -108,7 +101,6 @@ export default function EditHostelModal({
   };
   //
   const toggleShow = () => setOpen(!open);
-  console.log(data);
 
   return (
     <>

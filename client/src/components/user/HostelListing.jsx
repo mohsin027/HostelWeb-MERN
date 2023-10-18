@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 
 export default function HostelListing({ data }) {
   return (
-    <div>
+    <div >
       <MDBCard>
         <MDBCardImage
           style={{ height: "12rem" }}
@@ -22,7 +22,7 @@ export default function HostelListing({ data }) {
         />
         <MDBCardBody>
           <MDBCardTitle>{data.hostelName.toUpperCase()}</MDBCardTitle>
-          <MDBCardText  style={{fontSize:".85rem", maxHeight:"80px", overflow:"hidden"}}>{data.description}</MDBCardText>
+          <MDBCardText  style={{fontSize:".85rem", height:"80px", overflow:"hidden"}}>{data.description}</MDBCardText>
           <MDBCardText>
             
             {data.hostelType === "men" ? "Gents Hostel" : "Ladies Hostel"}

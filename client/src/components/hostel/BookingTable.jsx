@@ -18,7 +18,6 @@ function BookingTable(props) {
 
   const { searchQuery } = useSelector((state) => state.common);
   const { hostel } = useSelector((state) => state.auth.hostel);
-  console.log('hostelsbookingtable', hostel._id);
   const [bookingData, setBookingData] = useState([]);
   const [active, setActive] = useState(1);
   const [refresh, setRefresh] = useState(false);
@@ -33,14 +32,13 @@ function BookingTable(props) {
       const roomBooking = await response.data.roomBooking;
       const count = await response.data.count;
       if(roomBooking){
-
         setBookingData(roomBooking);
       }
       if (count) {
         setCount(Math.ceil(count/limit));
       }
     } catch (error) {
-      console.log(error, "booking chweck error");
+      console.log(error, "booking check error");
     }
   };
   useEffect(() => {
@@ -49,14 +47,11 @@ function BookingTable(props) {
 
   const handlePageChange = async (event, value) => {
     setPage(value);
-
     setSkip(page * limit);
-
     setRefresh(!refresh);
   };
   const handleItemsPerPage = async (e) => {
     setLimit(e.target.value);
-
     setRefresh(!refresh);
   };
 

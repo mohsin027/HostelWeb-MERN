@@ -27,16 +27,13 @@ const UserRoutes = () => {
       dispatch({ type: "SET-USER", payload: { loggedIn: false } });
     }
   };
-  console.log(user);
 
   const fetchData = async () => {
     try {
       const response = await axios.get("/user/getAllHostels");
       const data = await response.data.hostelList;
       // const count = await response.data.count;
-
       dispatch({ type: "SET-HOSTEL-DATA", payload: data });
-      console.log("response:", data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
