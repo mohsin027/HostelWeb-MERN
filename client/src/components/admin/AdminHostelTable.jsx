@@ -48,7 +48,7 @@ function HostelTable() {
       }
     };
     fetchData();
-  }, [refresh, page,limit]);
+  }, [refresh, page, limit]);
 
   const handleStatus = async (status, id, index) => {
     const { isConfirmed } = await mySwal.confirm("Are You sure " + status);
@@ -95,21 +95,18 @@ function HostelTable() {
   };
   const handlePageChange = async (event, value) => {
     setPage(value);
-
     setSkip(page * limit);
-
     setRefresh(!refresh);
   };
   const handleItemsPerPage = async (e) => {
     setLimit(e.target.value);
-
     setRefresh(!refresh);
   };
 
   return (
     <MDBContainer className="pt-3">
       <h4 className="mt-2 mb-3 ms-1">Hostels</h4>
-      
+
       <div className="table-responsive">
         <MDBTable align="middle" striped>
           <MDBTableHead className="" style={{ backgroundColor: "#E7E7E7" }}>

@@ -22,8 +22,6 @@ export default function AdminHome() {
       setBookings(data.bookings);
       setCapacity(data.roomCapacity[0].totalCapacity);
       setOccupants(data.roomOccupancy[0].totalOccupants);
-
-
     } catch (error) {
       console.error(error.message);
     }
@@ -48,11 +46,9 @@ export default function AdminHome() {
     const monthWiseTotal = {};
 
     for (const booking of bookings) {
-      const month = new Date(booking.createdAt).getMonth(); 
-      // const year = new Date(booking.createdAt).getFullYear(); 
-
-      const monthYearKey = month; 
-
+      const month = new Date(booking.createdAt).getMonth();
+      // const year = new Date(booking.createdAt).getFullYear();
+      const monthYearKey = month;
       if (monthWiseTotal[monthYearKey]) {
         monthWiseTotal[monthYearKey] += booking.amount;
       } else {
@@ -63,11 +59,8 @@ export default function AdminHome() {
     for (let i = 0; i < 12; i++) {
       monthlyData[i] = monthWiseTotal[i] ?? 0;
     }
-
     return monthlyData;
   };
-
-
 
   return (
     <>
@@ -79,7 +72,11 @@ export default function AdminHome() {
           <BookingTrendChart
             calculateMonthWiseTotal={calculateMonthWiseTotal}
           />
-          <AdminPieChart hostelTypeArray={hostelTypeArray} occupants={occupants} capacity={capacity}></AdminPieChart>
+          <AdminPieChart
+            hostelTypeArray={hostelTypeArray}
+            occupants={occupants}
+            capacity={capacity}
+          ></AdminPieChart>
         </div>
       </div>
       {/* <DashboardLayout/> */}

@@ -28,12 +28,14 @@ export default function EditUserProfileModal({ open, setOpen }) {
     fullName: "",
     contactNumber: "",
     address: "",
+    gender: "",
   });
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
+    console.log('editprofmodal', name, value);
   };
   //   const handleImageChange=(e)=>{
   //     if(isValidFileUploaded(e.target.files[0])){
@@ -50,8 +52,8 @@ export default function EditUserProfileModal({ open, setOpen }) {
 
   useEffect(() => {
     if (user) {
-      const { fullName, address, contactNumber, _id } = user.user;
-      setData({ ...data, fullName, address, contactNumber, id: _id });
+      const { fullName, address, contactNumber, _id,gender } = user.user;
+      setData({ ...data, fullName, address, contactNumber, id: _id,gender });
     }
   }, [user]);
 
@@ -86,6 +88,7 @@ export default function EditUserProfileModal({ open, setOpen }) {
         fullName: "",
         contactNumber: "",
         address: "",
+        gender: "",
       });
     } catch (error) {
       setIsLoading(false);
@@ -145,6 +148,26 @@ export default function EditUserProfileModal({ open, setOpen }) {
                   size="lg"
                   name="address"
                 />
+                <div>
+              <MDBRadio
+                name="gender"
+                id="inlineRadio1"
+                value="male"
+                checked={data.gender==='male'}
+                label="Male"
+                onChange={handleChange}
+                inline
+              />
+              <MDBRadio
+                name="gender"
+                id="inlineRadio2"
+                value="female"
+                checked={data.gender==='female'}
+                label="Female"
+                onChange={handleChange}
+                inline
+              />
+            </div>
 
                 {error && (
                   <div className="d-flex justify-content-between mt-3 mb-4">
