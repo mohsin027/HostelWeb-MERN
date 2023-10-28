@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 function dbConnect(){
-    console.log("database connecting")
+    console.log("database connecting...")
     mongoose.connect(process.env.MONGO_URI).then(result=>{
         console.log("Database connected")
     }).catch((err)=>{
