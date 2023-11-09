@@ -146,7 +146,7 @@ export const userLogin = async (req, res) => {
     }
     if (user.block) return res.json({ err: true, message: "You are blocked" });
     if (!user.password) {
-      return res.json({ err: true, message: "Please login" });
+      return res.json({ err: true, message: "You registered by google. Please goto google login" });
     }
     const userValid = bcrypt.compareSync(password, user.password);
     if (!userValid) return res.json({ err: true, message: "wrong Password" });

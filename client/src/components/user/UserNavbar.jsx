@@ -46,7 +46,7 @@ export default function UserNavbar() {
         <div className="d-flex gap-3 align-items-center">
             <Link to={'/'}>
           <h4 className="brand-name d-flex" >
-          <RiMenu2Line className="me-3 menu-icon" />
+          {/* <RiMenu2Line className="me-3 menu-icon" /> */}
             HostelWeb
             </h4>
             </Link> 

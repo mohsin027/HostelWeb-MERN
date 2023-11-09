@@ -18,7 +18,7 @@ import moment from "moment";
 import mySwal from "../../utils/sweetalert";
 import { ClipLoader } from "react-spinners";
 import toast from "react-hot-toast";
-import { Pagination } from "@mui/material";
+import { Pagination, formHelperTextClasses } from "@mui/material";
 
 export default function BookingDetails() {
   const { user } = useSelector((state) => state.auth.user);
@@ -88,6 +88,13 @@ export default function BookingDetails() {
               <MDBCardHeader>
                 <h4>Booking Details</h4>
               </MDBCardHeader>
+              {bookingData.length<=0?
+              <div className="d-flex align-items-center mx-5">
+                <p>No bookings found</p>
+              </div>
+              :
+                
+              
               <MDBCardBody className="table-responsive">
                 <MDBTable style={{ overflowX: "auto" }}>
                   <MDBTableHead>
@@ -192,6 +199,7 @@ export default function BookingDetails() {
                   </div>
                 </div>
               </MDBCardBody>
+              }
             </MDBCard>
           </MDBCol>
         </MDBRow>

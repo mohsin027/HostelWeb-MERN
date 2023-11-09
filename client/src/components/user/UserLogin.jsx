@@ -12,6 +12,7 @@ import {
 } from "mdb-react-ui-kit";
 import loginImage from "../../assets/images/login.jpg";
 import { Link } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
 
 function UserLogin() {
   const [error, setError] = useState(null);
@@ -113,15 +114,20 @@ function UserLogin() {
             <div className="w-100 text-center">
               Don't Have an account ? <Link to="/register">Register</Link>
             </div>
+            <div className="d-flex align-content-center">
+              
             <MDBBtn
-              className="mb-4 w-100"
+              className="mb-4 w-100 d-flex justify-content-center"
               onClick={handleGoogleLogin}
               size="lg"
               style={{ backgroundColor: "white", color: "black" }}
-            >
-              <MDBIcon fab icon="google-g" className="mx-2" />
+              >
+              {/* <MDBIcon fab icon="google-g" className="mx-2" /> */}
+              <FcGoogle className="m-1 me-2" />
               Continue with Google
             </MDBBtn>
+              </div>
+            
 
             {/* <div className="divider d-flex align-items-center my-4">
       <p className="text-center fw-bold mx-3 mb-0">OR</p>
