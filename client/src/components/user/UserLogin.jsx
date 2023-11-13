@@ -127,6 +127,9 @@ function UserLogin() {
               Continue with Google
             </MDBBtn>
               </div>
+              <div className="w-100 text-center ">
+              Hostel Admin/Owner ? <Link to={process.env.REACT_APP_CLIENT_URL+"/hostel"}>Click here</Link>
+            </div>
             
 
             {/* <div className="divider d-flex align-items-center my-4">

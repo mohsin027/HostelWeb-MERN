@@ -42,9 +42,11 @@ export default function HostelNavbar() {
     >
       <MDBContainer fluid className="d-flex" style={{flexWrap:"nowrap"}}>
         <div className="d-flex gap-3 align-items-center">
+        <Link to={'/hostel'}>
           <h4 className="brand-name d-flex" >
           <RiMenu2Line className="me-3 menu-icon" onClick={()=>dispatch({type:"TOGGLE-ADMIN-SIDEBAR"})}/>
             HostelWeb</h4>
+            </Link>
         </div>
         { window.location.pathname!=="/admin" &&
           <div className="w-100 d-flex justify-content-center align-items-center">

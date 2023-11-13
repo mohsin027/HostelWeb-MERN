@@ -1,3 +1,4 @@
+import { MDBCol, MDBRow } from 'mdb-react-ui-kit';
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
@@ -55,7 +56,22 @@ export default function AdminPieChart(props) {
     
   
     return ( 
-    <div className="d-flex mb-5">
+      <>
+      <MDBRow>
+        <MDBCol>
+        <div id="chart" style={{width:'500px'}} className=''>
+        <ReactApexChart key={1} options={options1} series={series1} type="donut" />
+        <h5 className='ms-4'>Registered Hostels</h5>
+      </div>
+        </MDBCol>
+        <MDBCol>
+        <div id="chart" style={{width:'525px'}} className=''>
+        <ReactApexChart key={2} options={options2} series={series2} type="donut" />
+        <h5 className='ms-4'>Capacity & occupants</h5>
+      </div>
+        </MDBCol>
+      </MDBRow>
+    {/* <div className="d-flex mb-5">
 
       <div id="chart" style={{width:'500px'}} className=''>
         <ReactApexChart key={1} options={options1} series={series1} type="donut" />
@@ -65,7 +81,8 @@ export default function AdminPieChart(props) {
         <ReactApexChart key={2} options={options2} series={series2} type="donut" />
         <h5 className='ms-4'>Capacity & occupants</h5>
       </div>
-    </div>
+    </div> */}
+      </>
     );
   }
   

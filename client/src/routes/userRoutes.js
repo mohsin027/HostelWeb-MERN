@@ -10,6 +10,8 @@ import { HostelDetailPage } from "../pages/user/HostelDetailPage";
 import UserProfilePage from "../pages/user/UserProfilePage";
 import RoomBookingSuccessPage from "../pages/user/RoomBookingSuccessPage";
 import UserGAuthCallback from "../pages/user/UserGAuthCallbach";
+import NotFound from "../components/notFound/NotFound";
+
 
 const UserRoutes = () => {
   const { user, userRefresh } = useSelector((state) => state.auth);
@@ -53,6 +55,7 @@ const UserRoutes = () => {
             <Route path="/view/bookRoom" element={<RoomBookingSuccessPage />} />
             <Route path="/user/profile" element={<UserProfilePage />} />
             <Route path="/" element={<Home />} />
+            <Route path="/*" element={<NotFound />} />
           </>
         )}
         {user?.login === false && (
