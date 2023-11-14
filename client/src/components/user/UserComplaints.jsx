@@ -40,6 +40,11 @@ export default function UserComplaints() {
           <MDBCardTitle>Complaints</MDBCardTitle>
           <MDBBtn onClick={() => setOpen(true)}>Register Complaint</MDBBtn>
         </MDBCardHeader>
+        {complaintsData.length<=0?
+              <div className="d-flex align-items-center mx-5">
+                <p>No complaints... going good</p>
+              </div>
+              :
         <MDBCardBody className="table-responsive">
           <MDBTable>
             <MDBTableHead>
@@ -64,6 +69,7 @@ export default function UserComplaints() {
             </MDBTableBody>
           </MDBTable>
         </MDBCardBody>
+}
       </MDBCard>
       <AddComplaintModal
         open={open}
