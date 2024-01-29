@@ -5,18 +5,18 @@ import Carousel from 'react-bootstrap/Carousel';
 const data = [
   {
    image: require('../../images/1.jpeg'), 
-   caption:"Hostel 1",
-   description:"Description "
+   caption:"Rudwika PG",
+   description:"Second home for you "
   },
   {
     image:require('./../../images/2.jpg'), 
-    caption:"Hostel 2",
-    description:"Description Here"
+    caption:"Inayat Stay",
+    description:"Affordable ldies stay"
    },
    {
     image:require('../../images/3.jpg'), 
-    caption:"Hostel 3",
-    description:"Description Here"
+    caption:"Hostel World",
+    description:"Luxury hostel"
    } 
 ]
 

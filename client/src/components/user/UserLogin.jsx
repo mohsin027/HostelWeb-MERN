@@ -25,6 +25,7 @@ function UserLogin() {
   // const [forgetPasswordComp, setForgetPasswordComp]= useState("");
 
   const handleEmailChange = (e) => {
+    setError(null)
     setEmail(e.target.value);
   };
 
@@ -89,6 +90,8 @@ function UserLogin() {
               onChange={handleEmailChange}
               type="email"
               size="lg"
+              pattern=".+@*\.com"
+              required
             />
             <MDBInput
               wrapperClass="mb-4"
@@ -98,6 +101,7 @@ function UserLogin() {
               id="formControlLg"
               type="password"
               size="lg"
+              required
             />
             {error && (
               <div className="d-flex justify-content-between mt-3 mb-4">
