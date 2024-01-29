@@ -47,7 +47,8 @@ function UserRegister() {
       data.email.trim() === "" ||
       data.contactNumber.toString().length !== 10 ||
       data.gender.trim() === "" ||
-      data.password.trim() === ""
+      data.password.trim() === "" ||
+      data.password !==data.confirmPassword
     ) {
       return true;
     }
