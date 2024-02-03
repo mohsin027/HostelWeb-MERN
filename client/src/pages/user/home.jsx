@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Button, Col } from "react-bootstrap";
 import HomeCarousel from "./Carosal";
 import NavMain from "../../components/user/Navbar";
-import { MDBBtn, MDBContainer, MDBInput, MDBRow } from "mdb-react-ui-kit";
+import { MDBBtn, MDBCard, MDBCol, MDBContainer, MDBInput, MDBRow } from "mdb-react-ui-kit";
 import Sidebar from "../admin/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import UserNavbar from "../../components/user/UserNavbar";
@@ -20,6 +20,7 @@ import {
 import mySwal from "../../utils/sweetalert";
 import { useNavigate } from "react-router-dom";
 import logger from "../../utils/logger";
+import emptyImage from '../../assets/images/emptyImage.jpg'
 
 function Home() {
   const { searchQuery } = useSelector((state) => state.common);
@@ -273,15 +274,29 @@ function Home() {
             </div>
             <MDBContainer>
               <MDBRow>
-                {filteredHostelData.map((i, index) => (
+                {filteredHostelData.length<=0? 
+                <MDBCol>
+
+                 {/* <Col sm={12} md={12} lg={4} className="p-2"> */}
+                  <div className="d-flex flex-column align-items-center justify-content-center">
+                  <img src={emptyImage} alt="emptyImage" className="emptyImage w-100"/>
+                  <h5>No hostels found</h5>
+                  </div>
+               {/* </Col> */}
+                </MDBCol>
+                :filteredHostelData.map((i, index) => (
+                  // <MDBCol>
+
                   <Col key={index} sm={12} md={12} lg={4} className="p-2">
                     <HostelListing data={i} />
                   </Col>
+                  // </MDBCol>
                 ))}
               </MDBRow>
             </MDBContainer>
           </div>
         </Row>
+        {filteredHostelData.length>5 && 
         <div className="d-flex justify-content-between my-4">
           <Pagination count={count} page={page} onChange={handlePageChange} />
           <div className="d-flex w-10 align-items-center">
@@ -294,6 +309,7 @@ function Home() {
             <p className="m-2">items</p>
           </div>
         </div>
+        }
       </MDBContainer>
     </>
     // <div>

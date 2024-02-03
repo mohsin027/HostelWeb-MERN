@@ -13,6 +13,10 @@
 }
 
 
+.emptyImage{
+    padding:0px 0px 0px 0px;
+}
+
 @media (max-width:768px){
     .hostel-listing-container{
         flex-direction: column;
