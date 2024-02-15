@@ -94,9 +94,9 @@ function HostelLogin() {
                 <p className="text-danger">{error}</p>
               </div>
             )}
-            <div className="d-flex justify-content-between mb-4">
+            {/* <div className="d-flex justify-content-between mb-4">
               <a href="!#">Forgot password?</a>
-            </div>
+            </div> */}
 
             <MDBBtn
               className="mb-4 w-100"
